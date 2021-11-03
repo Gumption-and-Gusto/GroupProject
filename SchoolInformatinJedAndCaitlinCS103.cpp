@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 //Structure Definition
@@ -120,11 +121,12 @@ void parentLogin();
 void mainMenu();
 void whichLogin();
 void whichRegister();
-void teacherRegister();
-void parentRegister();
+Teacher teacherRegister(Teacher newRegistrant);
+Parent parentRegister();
 
 int main()
 {
+	vector <Teacher> teachers;
 	mainMenu();
 }
 
@@ -208,7 +210,7 @@ void whichRegister() {
 	cin >> submenu;
 	switch (submenu) {
 	case 1:
-		teacherRegister();
+		teacherRegister();//WORK IN PROGRESS needs an argument
 		break;
 	case 2:
 		parentRegister();
@@ -220,10 +222,23 @@ void whichRegister() {
 	}
 }
 
-void teacherRegister() {
-
+Teacher teacherRegister(Teacher newRegistrant) {
+	//WORK IN PROGRESS - inputs
+	//getline(cin, firstName); 
+	//lastName
+	//preferredName
+	//gender
+	//pronouns
+	//DOB
+	//email
+	//Ph
+	//classroom
+	//year
+	//username
+	//password
+	//confirmPassword
 }
 
-void parentRegister() {
+Parent parentRegister() {
 
 }
