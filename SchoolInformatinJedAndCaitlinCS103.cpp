@@ -118,6 +118,7 @@ void teacherLogin();
 void adminLogin();
 void parentLogin();
 void mainMenu();
+void whichLogin();
 
 int main()
 {
@@ -128,38 +129,70 @@ int main()
 
 void mainMenu() {
 	int menu;
+	cout << "\nPlease select one of the following options by typing its number and pressing enter.\n\n\n\t1. Login\n\n\t2. Register\n\n";
 	cin >> menu;
 	switch (menu) {
 	case 1:
+		whichLogin();
 		break;
 	case 2:
 		break;
-	case 3:
-		break;
-	case 4:
-		break;
 	default:
+		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+			mainMenu();
 		break;
 	}
 }
 
 void teacherLogin() {
+	string username;
 	cout << "Please enter your username: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, username);
+	string password;
 	cout << "Please enter your password: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, password);
 }
 
 void adminLogin() {
+	string username;
 	cout << "Please enter your username: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, username);
+	string password;
 	cout << "Please enter your password: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, password);
 }
 
 void parentLogin() {
+	string username;
 	cout << "Please enter your username: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, username);
+	string password;
 	cout << "Please enter your password: ";
-	cin >> ;
+	cin.ignore();
+	getline(cin, password);
+}
+
+void whichLogin() {
+	cout << "\nWhat kind of account are you logging in?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n\t3. Admin\n\n";
+	int submenu;
+	cin >> submenu;
+	switch (submenu) {
+	case 1:
+		teacherLogin();
+		break;
+	case 2:
+		parentLogin();
+		break;
+	case 3:
+		adminLogin();
+		break;
+	default:
+		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+		whichLogin();
+		break;
 }
