@@ -119,6 +119,9 @@ void adminLogin();
 void parentLogin();
 void mainMenu();
 void whichLogin();
+void whichRegister();
+void teacherRegister();
+void parentRegister();
 
 int main()
 {
@@ -136,6 +139,7 @@ void mainMenu() {
 		whichLogin();
 		break;
 	case 2:
+		whichRegister();
 		break;
 	default:
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
@@ -195,4 +199,31 @@ void whichLogin() {
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
 		whichLogin();
 		break;
+	}
+}
+
+void whichRegister() {
+	cout << "\nWhat kind of account are you registering?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n";
+	int submenu;
+	cin >> submenu;
+	switch (submenu) {
+	case 1:
+		teacherRegister();
+		break;
+	case 2:
+		parentRegister();
+		break;
+	default:
+		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+		whichLogin();
+		break;
+	}
+}
+
+void teacherRegister() {
+
+}
+
+void parentRegister() {
+
 }
