@@ -7,7 +7,6 @@
 using namespace std;
 
 //Structure Definition
-
 struct Child {
 	string firstName;
 	string lastName;
@@ -70,16 +69,6 @@ struct Teacher {
 	}
 };
 
-struct Admin {
-	string username;
-	string password;
-
-	Admin(string un = "smithDeborah", string pw = "adminadmin123") {
-		username = un;
-		password = pw;
-	}
-};
-
 struct Parent {
 	string firstName;
 	string lastName;
@@ -95,8 +84,9 @@ struct Parent {
 	string confirmPassword;
 	string coCarers;
 	string classroom;
+	string child;
 
-	Parent(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cc = "", string cr = "") {
+	Parent(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cc = "", string cr = "", string c = "") {
 		firstName = fn;
 		lastName = ln;
 		preferredName = pn;
@@ -111,134 +101,167 @@ struct Parent {
 		confirmPassword = cpw;
 		coCarers = cc;
 		classroom = cr;
+		child = c;
+	}
+};
+
+struct Admin {
+	string username;
+	string password;
+
+	Admin(string un = "smithDeborah", string pw = "adminadmin123") {
+		username = un;
+		password = pw;
 	}
 };
 
 //Function Prototypes
-void teacherLogin();
-void adminLogin();
-void parentLogin();
-void mainMenu();
-void whichLogin();
-void whichRegister();
-Teacher teacherRegister(Teacher newRegistrant);
-Parent parentRegister();
+void mainMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void whichLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void whichRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
 
 int main()
-{
+{	
+	vector <Child> children;
 	vector <Teacher> teachers;
-	mainMenu();
+	vector <Parent> parents;
+	Admin admin;
+	mainMenu(&children, &teachers, &parents, &admin);
 }
 
 //Function Definitions
-
-void mainMenu() {
-	int menu;
-	cout << "\nPlease select one of the following options by typing its number and pressing enter.\n\n\n\t1. Login\n\n\t2. Register\n\n";
+void mainMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string menu;
+	cout << "\nPlease select one of the following options by typing its number and pressing enter.\n\n\n\t1. Login\n\n\t2. Register\n\n\t3. Exit\n\n";
 	cin >> menu;
-	switch (menu) {
-	case 1:
-		whichLogin();
-		break;
-	case 2:
-		whichRegister();
-		break;
-	default:
+	if (menu == "1") {
+		whichLogin(&children, &teachers, &parents, &admin);
+	}
+	else if (menu == "2") {
+		whichRegister(&children, &teachers, &parents, &admin);
+	}
+	else if (menu == "3") {
+		exit(0);
+	}
+	else {
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
-			mainMenu();
-		break;
+		mainMenu(&children, &teachers, &parents, &admin);
 	}
 }
 
-void teacherLogin() {
-	string username;
-	cout << "Please enter your username: ";
-	cin.ignore();
-	getline(cin, username);
-	string password;
-	cout << "Please enter your password: ";
-	cin.ignore();
-	getline(cin, password);
-}
-
-void adminLogin() {
-	string username;
-	cout << "Please enter your username: ";
-	cin.ignore();
-	getline(cin, username);
-	string password;
-	cout << "Please enter your password: ";
-	cin.ignore();
-	getline(cin, password);
-}
-
-void parentLogin() {
-	string username;
-	cout << "Please enter your username: ";
-	cin.ignore();
-	getline(cin, username);
-	string password;
-	cout << "Please enter your password: ";
-	cin.ignore();
-	getline(cin, password);
-}
-
-void whichLogin() {
+void whichLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
 	cout << "\nWhat kind of account are you logging in?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n\t3. Admin\n\n";
-	int submenu;
+	string submenu;
 	cin >> submenu;
-	switch (submenu) {
-	case 1:
-		teacherLogin();
-		break;
-	case 2:
-		parentLogin();
-		break;
-	case 3:
-		adminLogin();
-		break;
-	default:
+	if (submenu == "1") {
+		teacherLogin(&children, &teachers, &parents, &admin);
+	}
+	else if (submenu == "2") {
+		parentLogin(&children, &teachers, &parents, &admin);
+	}
+	else if (submenu == "3") {
+		adminLogin(&children, &teachers, &parents, &admin);
+	}
+	else{
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
-		whichLogin();
-		break;
+		whichLogin(&children, &teachers, &parents, &admin);
+	
 	}
 }
 
-void whichRegister() {
+void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string username;
+	cout << "Please enter your username: ";
+	cin.ignore();
+	getline(cin, username);
+	string password;
+	cout << "Please enter your password: ";
+	cin.ignore();
+	getline(cin, password);
+}
+
+void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string username;
+	cout << "Please enter your username: ";
+	cin.ignore();
+	getline(cin, username);
+	string password;
+	cout << "Please enter your password: ";
+	cin.ignore();
+	getline(cin, password);
+}
+
+void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string username;
+	cout << "Please enter your username: ";
+	cin.ignore();
+	getline(cin, username);
+	string password;
+	cout << "Please enter your password: ";
+	cin.ignore();
+	getline(cin, password);
+}
+
+
+
+void whichRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
 	cout << "\nWhat kind of account are you registering?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n";
 	int submenu;
 	cin >> submenu;
 	switch (submenu) {
 	case 1:
-		teacherRegister();//WORK IN PROGRESS needs an argument
+		teacherRegister(&children, &teachers, &parents, &admin);
 		break;
 	case 2:
-		parentRegister();
+		parentRegister(&children, &teachers, &parents, &admin);
 		break;
 	default:
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
-		whichLogin();
+		whichLogin(&children, &teachers, &parents, &admin);
 		break;
 	}
 }
 
-Teacher teacherRegister(Teacher newRegistrant) {
-	//WORK IN PROGRESS - inputs
-	//getline(cin, firstName); 
-	//lastName
-	//preferredName
-	//gender
-	//pronouns
-	//DOB
-	//email
-	//Ph
-	//classroom
-	//year
-	//username
-	//password
-	//confirmPassword
+void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	
 }
 
-Parent parentRegister() {
-
+void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
 }
