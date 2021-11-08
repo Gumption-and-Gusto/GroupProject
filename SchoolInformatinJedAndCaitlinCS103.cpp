@@ -40,6 +40,7 @@ struct Child {
 struct Teacher {
 	string firstName;
 	string lastName;
+	string title;
 	string preferredName;
 	string gender;
 	string pronouns;
@@ -178,7 +179,6 @@ void whichLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	else{
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
 		whichLogin(&children, &teachers, &parents, &admin);
-	
 	}
 }
 
@@ -193,7 +193,6 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	getline(cin, username);
 	string password;
 	cout << "Please enter your password: ";
-	cin.ignore();
 	getline(cin, password);
 }
 
@@ -208,7 +207,6 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	getline(cin, username);
 	string password;
 	cout << "Please enter your password: ";
-	cin.ignore();
 	getline(cin, password);
 }
 
@@ -223,7 +221,6 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	getline(cin, username);
 	string password;
 	cout << "Please enter your password: ";
-	cin.ignore();
 	getline(cin, password);
 }
 
@@ -256,7 +253,63 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
-	
+	Teacher registrant;
+	cout << "Please enter your first name(s): ";
+	cin.ignore();
+	getline(cin, registrant.firstName);
+	cout << "Please enter your last name(s): ";
+	getline(cin, registrant.lastName);
+	cout << "Please enter your preferred title: (Mr, Miss, Mx, Dr. etc) ";
+	getline(cin, registrant.title);
+	cout << "Please enter your preferred name: ";
+	getline(cin, registrant.preferredName);
+	cout << "Please enter your pronouns: ";
+	getline(cin, registrant.pronouns);
+	cout << "Please enter your gender: ";
+	getline(cin, registrant.gender);
+	cout << "Please enter your date of birth: ";
+	getline(cin, registrant.DOB);
+	cout << "Please enter your email: ";
+	getline(cin, registrant.email);
+	int emailFlag = 0;
+	while (emailFlag == 0) {
+		for (int i = 0; i < registrant.email.length(); i++) {
+			if (registrant.email[i] == '@') {
+				emailFlag = 1;
+			}
+		}
+		if (emailFlag == 0) {
+			cout << "Error. Emails must include '@' symbol. Please re-enter your email: ";
+			getline(cin, registrant.email);
+		}
+	}
+	cout << "Please enter your contact number: ";
+	getline(cin, registrant.Ph);
+	cout << "Please enter the classroom you'll be working in (e.g. 201, 105): ";
+	getline(cin, registrant.classroom);
+	cout << "Please enter the year you'll be teaching: ";
+	getline(cin, registrant.classroom);
+	cout << "Please enter choose a username: ";
+	getline(cin, registrant.username);
+	cout << "Please enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
+	getline(cin, registrant.password);
+	int passwordFlag = 0;
+	int upperFlag = 0;
+	int lowerFlag = 0;
+	int digitFlag = 0;
+	int symbolFlag = 0
+	while (passwordFlag == 0) {
+		for (int i = 0; i < registrant.password.length(); i++) {
+		}
+			if (islower(registrant.password[i])) {
+				emailFlag = 1;
+			}
+		}
+		if (passwordFlag == 0) {
+			cout << "Error. Emails must include '@' symbol. Please re-enter your email: ";
+			getline(cin, registrant.password);
+		}
+	}
 }
 
 void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
