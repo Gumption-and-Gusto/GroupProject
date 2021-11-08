@@ -297,17 +297,40 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	int upperFlag = 0;
 	int lowerFlag = 0;
 	int digitFlag = 0;
-	int symbolFlag = 0
+	int symbolFlag = 0;
+	int symbolSubFlag = 0;
 	while (passwordFlag == 0) {
 		for (int i = 0; i < registrant.password.length(); i++) {
-		}
+			symbolSubFlag = 0;
 			if (islower(registrant.password[i])) {
-				emailFlag = 1;
+				lowerFlag = 1;
+				symbolSubFlag++;
+			}
+			if (isupper(registrant.password[i])) {
+				upperFlag = 1;
+				symbolSubFlag++;
+			}
+			if (isdigit(registrant.password[i])) {
+				digitFlag = 1;
+				symbolSubFlag++;
+			}
+			if (symbolSubFlag == 0) {
+				symbolFlag = 1;
 			}
 		}
+		if (registrant.password.length() > 7 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
+			passwordFlag++;
+		}
 		if (passwordFlag == 0) {
-			cout << "Error. Emails must include '@' symbol. Please re-enter your email: ";
+			cout << "Error. Passwords must be 8 or more characters, including upper and lower case letters, numbers, and non-alphanumeric symbols. Please enter a valid password: ";
 			getline(cin, registrant.password);
+		}
+	}
+	while (registrant.confirmPassword != registrant.password) {
+		cout << "Please confirm your password: ";
+		getline(cin, registrant.confirmPassword);
+		if (registrant.confirmPassword != registrant.password) {
+			cout << "Passwords do not match. ";
 		}
 	}
 }

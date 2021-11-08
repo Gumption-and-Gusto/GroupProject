@@ -1,2 +1,3 @@
 ﻿  SchoolInformatinJedAndCaitlinCS103.cpp
-  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\SchoolInformatinJedAndCaitlinCS103\Debug\SchoolInformatinJedAndCaitlinCS103.exe
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\GroupProjectSchoolInformationCS103\SchoolInformatinJedAndCaitlinCS103\SchoolInformatinJedAndCaitlinCS103.cpp(303,21): warning C4018: '<': signed/unsigned mismatch
+  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\GroupProjectSchoolInformationCS103\SchoolInformatinJedAndCaitlinCS103\Debug\SchoolInformatinJedAndCaitlinCS103.exe
