@@ -20,7 +20,7 @@ struct Child {
 	string reading;
 	string others;
 	string progress;
-	int parent;
+	int parent;// This will be a backend ID #
 
 	//Constructor
 	Child(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string cr = "", string m = "", string s = "", string w = "", string r = "", string o = "", string pr = "", int pa = 0) {
@@ -93,7 +93,7 @@ struct Parent {
 	string username;
 	string password;
 	string confirmPassword;
-	int ID;
+	int ID; // This will be a backend ID #
 
 	//Constructor
 	Parent(string fn = "", string ln = "", string t = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cc = "", string cr = "", string cfn = "", string cln = "", int id = 0) {
@@ -157,9 +157,11 @@ void mainMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a)
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Menu
 	string menu;
 	cout << "\nPlease select one of the following options by typing its number and pressing enter.\n\n\n\t1. Login\n\n\t2. Register\n\n\t3. Exit\n\n";
-	cin >> menu;//Menus using string inputs and digit answers through if statements are more robust than alt variables
+	cin >> menu;//Menus using string inputs and digit answers through if statements are more robust than other variables or switches. We don't use getline because we don't want values with spaces to be handled fully - if some enters "1 " this code will read it as "1", which is desirable.
 	if (menu == "1") {
 		whichLogin(&children, &teachers, &parents, &admin);
 	}
@@ -167,7 +169,7 @@ void mainMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a)
 		whichRegister(&children, &teachers, &parents, &admin);
 	}
 	else if (menu == "3") {
-		exit(0);
+		exit(0);//Exit 0 ends the program even if a bunch of functions are still running
 	}
 	else {
 		cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
@@ -180,6 +182,8 @@ void whichLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Login Menu
 	cout << "\nWhat kind of account are you logging in?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n\t3. Admin\n\n";
 	string submenu;
 	cin >> submenu;
@@ -203,16 +207,21 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Username
 	string username;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
-	//check against usernames
+	//FILES check against usernames
+	//Add if for if username not in file
 
+	//Password
 	string password;
 	cout << "Please enter your password: ";
 	getline(cin, password);
-	//check password against file
+	//FILES check password against file
+	//Add if for if password doesn't match, 3 attempts only
 }
 
 void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -220,13 +229,21 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Username
 	string username;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
+	//FILES check against usernames
+	//Add if for if username not in file
+
 	string password;
+	//FILES check against usernames
 	cout << "Please enter your password: ";
 	getline(cin, password);
+	//FILES check password against file
+	//Add if for if password doesn't match, 3 attempts only
 }
 
 void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -234,13 +251,20 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+	//Username
 	string username;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
+	//FILES check against usernames
+	//Add if for if username not in file
+
 	string password;
+	//FILES check against usernames
 	cout << "Please enter your password: ";
 	getline(cin, password);
+	//FILES check password against file
+	//Add if for if password doesn't match, 3 attempts only
 }
 
 void whichRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -248,6 +272,8 @@ void whichRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Registration Menu
 	cout << "\nWhat kind of account are you registering?\n\n\n\t1. Teacher\n\n\t2. Parent\n\n";
 	int submenu;
 	cin >> submenu;
@@ -270,6 +296,8 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Register Teacher Record
 	Teacher registrant;
 	cout << "Please enter your first name(s): ";
 	cin.ignore();
@@ -288,6 +316,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	getline(cin, registrant.DOB);
 	cout << "Please enter your email: ";
 	getline(cin, registrant.email);
+	//Email Validation - is there at least one @ symbol?
 	int emailFlag = 0;
 	while (emailFlag == 0) {
 		for (int i = 0; i < registrant.email.length(); i++) {
@@ -308,9 +337,10 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	getline(cin, registrant.year);
 	cout << "Please enter choose a username: ";
 	getline(cin, registrant.username);
-	//Check against all extant usernames
+	//FILES Check against all extant usernames, alert and offer input again if conflict
 	cout << "Please enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
+	//Password Validation
 	int passwordFlag = 0;
 	int upperFlag = 0;
 	int lowerFlag = 0;
@@ -344,6 +374,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			getline(cin, registrant.password);
 		}
 	}
+	//Password Confirmation
 	while (registrant.confirmPassword != registrant.password) {
 		cout << "Please confirm your password: ";
 		getline(cin, registrant.confirmPassword);
@@ -351,7 +382,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			cout << "Passwords do not match. ";
 		}
 	}
-	//write registrant into files
+	//FILES write registrant into files
 }
 
 void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -359,6 +390,8 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Register Parent Record
 	Parent registrant;
 	cout << "Please enter your first name(s): ";
 	cin.ignore();
@@ -377,6 +410,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	getline(cin, registrant.DOB);
 	cout << "Please enter your email: ";
 	getline(cin, registrant.email);
+	//Email Validation
 	int emailFlag = 0;
 	while (emailFlag == 0) {
 		for (int i = 0; i < registrant.email.length(); i++) {
@@ -401,12 +435,13 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	getline(cin, registrant.childLastName);
 	cout << "Please enter your child's classroom (eg 201, 105): ";
 	getline(cin, registrant.classroom);
-	//Check files for matching child, retake names and class if none found or tell them to contact admin
+	//FILES Check files for matching child, retake names and class if none found or tell them to contact admin
 	cout << "Please enter choose a username: ";
 	getline(cin, registrant.username);
-	//Check against all extant usernames
+	//FILES Check against all extant usernames, retake input if taken
 	cout << "Please enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
+	//Password Validation
 	int passwordFlag = 0;
 	int upperFlag = 0;
 	int lowerFlag = 0;
@@ -440,6 +475,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			getline(cin, registrant.password);
 		}
 	}
+	//Password Confirmation
 	while (registrant.confirmPassword != registrant.password) {
 		cout << "Please confirm your password: ";
 		getline(cin, registrant.confirmPassword);
@@ -447,9 +483,9 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			cout << "Passwords do not match. ";
 		}
 	}
-	//append registrant to files
-	//generate parent ID number, compare with extant IDs, if fresh assign
-	//Write parent ID number into child's file
+	//FILES append registrant to files
+	//FILES generate parent ID number, compare with extant IDs, if fresh assign
+	//FILES Write parent ID number into child's file
 }
 
 void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -457,6 +493,8 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Register Child Record
 	Child registrant;
 	cout << "Please enter the student's name(s): ";
 	cin.ignore();
@@ -479,9 +517,25 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	getline(cin, registrant.writing);
 	cout << "Please enter the average across other results (if known): ";
 	getline(cin, registrant.others);
-	cout << "Please enter the current overall learning progress (if known). Recommended assessments are Achieved, Progressing, Need Help: ";
-	getline(cin, registrant.progress);
-	//append registrant to files
+	//Learning Progress - We take this via a number and write it in plain text to make it guaranteed consistent for the admin report to sleect them all
+	string progress = "0";
+	while (progress != "1" && progress != "2" && progress != "3") {
+		cout << "Please enter the current overall learning progress (if known). Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
+		cin >> progress;
+		if (progress == "1") {
+			registrant.progress = "Achieved";
+		}
+		else if (progress == "2") {
+			registrant.progress = "Progressing";
+		}
+		else if (progress == "3") {
+			registrant.progress = "Needs Help";
+		}
+		else {
+			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
+		}
+	}
+	//FILES append registrant to files
 }
 
 void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -497,20 +551,37 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	getline(cin, firstName);
 	cout << "Please enter the student's last name(s): ";
 	getline(cin, lastName);
-	//Look through classroom file, find student by name, copy into updatee
-	cout << "Please enter the maths results (if known): ";
+	//FILES Look through classroom file, find student by name, copy into updatee
+	cout << "Please enter the maths results: ";
 	getline(cin, updatee.maths);
-	cout << "Please enter the science results (if known): ";
+	cout << "Please enter the science results: ";
 	getline(cin, updatee.science);
-	cout << "Please enter the reading results (if known): ";
+	cout << "Please enter the reading results: ";
 	getline(cin, updatee.reading);
-	cout << "Please enter the writing results (if known): ";
+	cout << "Please enter the writing results: ";
 	getline(cin, updatee.writing);
-	cout << "Please enter the average across other results (if known): ";
+	cout << "Please enter the average across other results: ";
 	getline(cin, updatee.others);
-	cout << "Please enter the current overall learning progress (if known). Recommended assessments are Achieved, Progressing, Need Help: ";
-	getline(cin, updatee.progress);
-	//overwrite child's file with updatee
+
+//Learning Progress
+	string progress = "0";
+	while (progress != "1" && progress != "2" && progress != "3") {
+		cout << "Please enter the current overall learning progress. Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
+		cin >> progress;
+		if (progress == "1") {
+			updatee.progress = "Achieved";
+		}
+		else if (progress == "2") {
+			updatee.progress = "Progressing";
+		}
+		else if (progress == "3") {
+			updatee.progress = "Needs Help";
+		}
+		else {
+			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
+		}
+	}
+	//FILES overwrite child's file with updatee
 }
 
 void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -522,6 +593,8 @@ void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	string lastName;
 	string classroom;
 	Child updatee;
+
+	//Select a student's record
 	cin.ignore();
 	cout << "Please enter the student's current first name(s): ";
 	getline(cin, firstName);
@@ -529,7 +602,10 @@ void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	getline(cin, lastName);
 	cout << "Please enter the student's current classroom: ";
 	getline(cin, classroom);
-	//Find child record and import to updatee
+	//FILES Find child record and import to updatee
+
+	//Updating record
+	//Needs an if for each statement asking them if they want to update that field
 	cout << "Please enter the student's new first name(s): ";
 	getline(cin, updatee.firstName);
 	cout << "Please enter the student's new last name(s): ";
@@ -548,9 +624,25 @@ void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	getline(cin, updatee.writing);
 	cout << "Please enter the new average across other results (if known): ";
 	getline(cin, updatee.others);
-	cout << "Please enter the new current overall learning progress (if known). Recommended assessments are Achieved, Progressing, Need Help: ";
-	getline(cin, updatee.progress);
-	//overwrite file with updatee
+	//Learning Progress
+	string progress = "0";
+	while (progress != "1" && progress != "2" && progress != "3") {
+		cout << "Please enter the current overall learning progress. Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
+		cin >> progress;
+		if (progress == "1") {
+			updatee.progress = "Achieved";
+		}
+		else if (progress == "2") {
+			updatee.progress = "Progressing";
+		}
+		else if (progress == "3") {
+			updatee.progress = "Needs Help";
+		}
+		else {
+			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
+		}
+	}
+	//FILES overwrite file with updatee
 }
 
 void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -558,23 +650,27 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Determine which child
 	string firstName;
 	string lastName;
 	string classroom;
 	cin.ignore();
-	cout << "Please enter the student's current first name(s): ";
+	cout << "Delete Record\nPlease enter the student's current first name(s): ";
 	getline(cin, firstName);
 	cout << "Please enter the student's current last name(s): ";
 	getline(cin, lastName);
 	cout << "Please enter the student's current classroom: ";
 	getline(cin, classroom);
-	//Find child record
+	//FILES Find child record, retake inputs if 
+
+	//Confirm delete
 	cout << "Record found. Are you sure you wish to delete this data? Enter 1 to confirm or 2 to cancel.";
 	string selection;
 	cin >> selection;
 	while (int selectedFlag = 0 == 0) {
 		if (selection == "1") {
-			//Delete data
+			//FILES Delete data
 			selectedFlag++;
 			//adminmenu
 		}
@@ -589,3 +685,18 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		}
 	}
 }
+
+//All Files work needs doing
+
+//Functions Still Needed
+	//Parent - see child's report
+	//Parent - see school notices
+	//Admin - see report of progressing students
+	//Admin - see report of students who need help "The report should include, classroom number, student full name, learning progress of each subject, teacher nameand their parents contact number."
+
+//Design menus nicely - headings, colours, dividing lines
+		//Include cancel options to avoid trapping users
+
+//Other potential improvements
+	//Pass only necessary vectors
+	//Login as function? save some lines of code
