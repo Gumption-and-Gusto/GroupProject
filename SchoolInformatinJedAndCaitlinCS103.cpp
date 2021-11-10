@@ -86,7 +86,6 @@ struct Parent {
 	string email;
 	string Ph;
 	string emergencyPh;
-	string coCarers;
 	string childFirstName;
 	string childLastName;
 	string classroom;
@@ -96,7 +95,7 @@ struct Parent {
 	int ID; //This will be a backend ID #
 
 	//Constructor
-	Parent(string fn = "", string ln = "", string t = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cc = "", string cr = "", string cfn = "", string cln = "", int id = 0) {
+	Parent(string fn = "", string ln = "", string t = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cr = "", string cfn = "", string cln = "", int id = 0) {
 		firstName = fn;
 		lastName = ln;
 		title = t;
@@ -110,7 +109,6 @@ struct Parent {
 		username = un;
 		password = pw;
 		confirmPassword = cpw;
-		coCarers = cc;
 		classroom = cr;
 		childFirstName = cfn;
 		childFirstName = cln;
@@ -123,7 +121,7 @@ struct Admin {
 	string password;
 
 	//Constructor, currently with hardcoded values
-	Admin(string un = "smithDeborah", string pw = "Adminadmin123+") {
+	Admin(string un = "PrincipalAdmin", string pw = "AdminAdmin123+") {
 		username = un;
 		password = pw;
 	}
@@ -141,6 +139,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
 void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
 void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
+bool askUpdate(string field);
 
 int main()
 {	
@@ -411,7 +410,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 
 	//Register Parent Record 
 	Parent registrant;
-	cout << "Please enter your first name(s): ";
+	cout << "Welcome to the parent registration form. Please note each child can only have one account, and each account can only have one child - if you have multiple children at the school you will have to register a parent's account for each one. \nPlease enter your first name(s): ";
 	cin.ignore();
 	getline(cin, registrant.firstName);
 	cout << "Please enter your last name(s): ";
@@ -445,11 +444,9 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	getline(cin, registrant.Ph);
 	cout << "Please enter a daytime contact number to use in emergencies: ";
 	getline(cin, registrant.emergencyPh);
-	cout << "Please enter the names of any co-carers: ";
-	getline(cin, registrant.coCarers);
-	cout << "Please enter the first name of your child: ";
+	cout << "Please enter the first name(s) of your child: ";
 	getline(cin, registrant.childFirstName);
-	cout << "Please enter the last name of your child: ";
+	cout << "Please enter the last name(s) of your child: ";
 	getline(cin, registrant.childLastName);
 	cout << "Please enter your child's classroom (eg 201, 105): ";
 	getline(cin, registrant.classroom);
@@ -508,12 +505,13 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	while (IDFlag == 0) {
 		int id = rand();
 		//FILES compare ID against all ID numbers in parent file. If not found there, registran.ID = id, IDFLag++
+		IDFlag++;
 	}
 
-	//Writing to File - CURRENTLY NOT WORKING. stalls out when it should write; file is never created.
+	//Writing to File
 	fstream ParentList("Parents.csv", ios::app);//Open file
 	//Write registrant details into teacher file:
-	ParentList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.emergencyPh << "," << registrant.coCarers << "," << registrant.childFirstName << "," << registrant.childLastName << "," << registrant.classroom << "," << registrant.username << "," << registrant.password << endl;
+	ParentList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.emergencyPh << "," << registrant.childFirstName << "," << registrant.childLastName << "," << registrant.classroom << "," << registrant.username << "," << registrant.password << endl;
 	ParentList.close();//Close file
 
 	//Register another?
@@ -579,7 +577,25 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
 		}
 	}
-	//FILES append registrant to classroom file
+
+	//Writing to File
+	fstream Classroom("201.csv", ios::app);//Open file
+	//Write registrant details into teacher file:
+	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << endl;
+	Classroom.close();//Close file
+
+	//Register another?
+	string another = "0";
+	while (another != "1" && another != "2") {
+		cout << "Register another teacher? Enter 1 to do so or 2 to return to the main menu.";
+		cin >> another;
+		if (another == "1") {
+			teacherRegister(&children, &teachers, &parents, &admin);
+		}
+		else if (another == "2") {
+			mainMenu(&children, &teachers, &parents, &admin);
+		}
+	}
 }
 
 void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -651,40 +667,70 @@ void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 
 	//Updating record
 	//Needs an if for each statement asking them if they want to update that field
-	cout << "Please enter the student's new first name(s): ";
-	getline(cin, updatee.firstName);
-	cout << "Please enter the student's new last name(s): ";
-	getline(cin, updatee.lastName);
-	cout << "Please enter the student's new preferred name: ";
-	getline(cin, updatee.preferredName);
-	cout << "Please enter the student's new pronouns: ";
-	getline(cin, updatee.pronouns);
-	cout << "Please enter the new maths results (if known): ";
-	getline(cin, updatee.maths);
-	cout << "Please enter the new science results (if known): ";
-	getline(cin, updatee.science);
-	cout << "Please enter the new reading results (if known): ";
-	getline(cin, updatee.reading);
-	cout << "Please enter the new writing results (if known): ";
-	getline(cin, updatee.writing);
-	cout << "Please enter the new average across other results (if known): ";
-	getline(cin, updatee.others);
-	//Learning Progress
-	string progress = "0";
-	while (progress != "1" && progress != "2" && progress != "3") {
-		cout << "Please enter the current overall learning progress. Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
-		cin >> progress;
-		if (progress == "1") {
-			updatee.progress = "Achieved";
-		}
-		else if (progress == "2") {
-			updatee.progress = "Progressing";
-		}
-		else if (progress == "3") {
-			updatee.progress = "Needs Help";
-		}
-		else {
-			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
+	bool update = askUpdate("first name");
+	if (update == true) {
+		cout << "Please enter the student's new first name(s): ";
+		getline(cin, updatee.firstName);
+	}
+	update = askUpdate("last name");
+	if (update == true) {
+		cout << "Please enter the student's new last name(s): ";
+		getline(cin, updatee.lastName);
+	}
+	update = askUpdate("preferred name");
+	if (update == true) {
+		cout << "Please enter the student's new preferred name: ";
+		getline(cin, updatee.preferredName);
+	}
+	update = askUpdate("pronouns");
+	if (update == true) {
+		cout << "Please enter the student's new pronouns: ";
+		getline(cin, updatee.pronouns);
+	}
+	update = askUpdate("marks for maths");
+	if (update == true) {
+		cout << "Please enter the new maths results (if known): ";
+		getline(cin, updatee.maths);
+	}
+	update = askUpdate("marks for science");
+	if (update == true) {
+		cout << "Please enter the new science results (if known): ";
+		getline(cin, updatee.science);
+	}
+	update = askUpdate("marks for reading");
+	if (update == true) {
+		cout << "Please enter the new reading results (if known): ";
+		getline(cin, updatee.reading);
+	}
+	update = askUpdate("marks for writing");
+	if (update == true) {
+		cout << "Please enter the new writing results (if known): ";
+		getline(cin, updatee.writing);
+	}
+	update = askUpdate("marks for other subjects");
+	if (update == true) {
+		cout << "Please enter the new average across other results (if known): ";
+		getline(cin, updatee.others);
+	}
+	update = askUpdate("learning Progress");
+	if (update == true) {
+		//Learning Progress
+		string progress = "0";
+		while (progress != "1" && progress != "2" && progress != "3") {
+			cout << "Please enter the current overall learning progress. Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
+			cin >> progress;
+			if (progress == "1") {
+				updatee.progress = "Achieved";
+			}
+			else if (progress == "2") {
+				updatee.progress = "Progressing";
+			}
+			else if (progress == "3") {
+				updatee.progress = "Needs Help";
+			}
+			else {
+				cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
+			}
 		}
 	}
 	//FILES overwrite file with updatee
@@ -731,6 +777,26 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	}
 }
 
+bool askUpdate(string field) {
+	cout << "Would you like to update the student's " << field << "?";
+	bool update;
+	string answer;
+	while (answer != "1" && answer != "2") {
+		cout << "\nEnter 1 to update or 2 to leave this data as is.";
+		cin >> answer;
+		if (answer == "1") {
+			update = true;
+		}
+		else if (answer == "2") {
+			update = false;
+		}
+		else {
+			cout << "Error. Please only type the number, then press enter.";
+		}
+	}
+	return update;
+}
+
 //All Files work needs doing
 	//File for teachers
 	//File for parents
@@ -746,8 +812,9 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 //Design menus nicely - headings, colours, dividing lines
 	//Include cancel options to avoid trapping users
 	//Include a "register/update another? prompt where approriate"
-	//Include better explanations of input formats (eg classroom numbers) and conditions(no two students in the same class with the same name, one parent account per kid)
+	//Include better explanations of input formats (eg classroom numbers) and conditions(eg no two students in the same class with the same name)
 	//Maybe output all extant classrooms for classroom questions to help epople select the one? Or make a selection menu with an add a class option? Worth noting Beula says we only need one classroom as a proof of concept
+	//Add support for siblings and multiple parents
 
 //Other potential improvements
 	//Pass only necessary vectors
