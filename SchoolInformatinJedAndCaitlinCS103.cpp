@@ -1,4 +1,4 @@
-//testing :D//Testing again//one more test!!
+//See the bottom for a list of things that still need doing!
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -20,7 +20,7 @@ struct Child {
 	string reading;
 	string others;
 	string progress;
-	int parent;// This will be a backend ID #
+	int parent;//This will be a backend ID #
 
 	//Constructor
 	Child(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string cr = "", string m = "", string s = "", string w = "", string r = "", string o = "", string pr = "", int pa = 0) {
@@ -93,7 +93,7 @@ struct Parent {
 	string username;
 	string password;
 	string confirmPassword;
-	int ID; // This will be a backend ID #
+	int ID; //This will be a backend ID #
 
 	//Constructor
 	Parent(string fn = "", string ln = "", string t = "", string pn = "", string g = "", string prn = "", string d = "", string e = "", string p = "", string ep = "", string un = "", string pw = "", string cpw = "", string cc = "", string cr = "", string cfn = "", string cln = "", int id = 0) {
@@ -144,7 +144,7 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 
 int main()
 {	
-	vector <Child> children;// I'm not sure that we'll actually need to pass these around all the time. I built it with these vectors in case but we may end up passing them a lot less
+	vector <Child> children;//I'm not sure that we'll actually need to pass these around all the time. I built it with these vectors in case but we may end up passing them a lot less
 	vector <Teacher> teachers;
 	vector <Parent> parents;
 	Admin admin;
@@ -366,7 +366,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 				symbolFlag = 1;
 			}
 		}
-		if (registrant.password.length() > 8 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
+		if (registrant.password.length() > 7 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
 			passwordFlag++;
 		}
 		if (passwordFlag == 0) {
@@ -382,7 +382,25 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			cout << "Passwords do not match. ";
 		}
 	}
-	//FILES write registrant into files
+
+	//Writing to File
+	fstream TeacherList("Teachers.csv", ios::app);//Open file
+	//Write registrant details into teacher file:
+	TeacherList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.classroom << "," << registrant.year << "," << registrant.username << "," << registrant.password << endl;
+	TeacherList.close();//Close file
+
+	//Register another?
+	string another = "0";
+	while (another != "1" && another != "2") {
+		cout << "Register another teacher? Enter 1 to do so or 2 to return to the main menu.";
+		cin >> another;
+		if (another == "1") {
+			teacherRegister(&children, &teachers, &parents, &admin);
+		}
+		else if (another == "2") {
+			mainMenu(&children, &teachers, &parents, &admin);
+		}
+	}
 }
 
 void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -391,7 +409,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	vector<Parent> parents = *p;
 	Admin admin = *a;
 
-	//Register Parent Record
+	//Register Parent Record 
 	Parent registrant;
 	cout << "Please enter your first name(s): ";
 	cin.ignore();
@@ -435,10 +453,10 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	getline(cin, registrant.childLastName);
 	cout << "Please enter your child's classroom (eg 201, 105): ";
 	getline(cin, registrant.classroom);
-	//FILES Check files for matching child, retake names and class if none found or tell them to contact admin
+	//FILES Check classroom file for matching child, retake names and class if none found or tell them to contact admin
 	cout << "Please enter choose a username: ";
 	getline(cin, registrant.username);
-	//FILES Check against all extant usernames, retake input if taken
+	//FILES Check against all extant parent usernames, retake input if taken
 	cout << "Please enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
 	//Password Validation
@@ -467,7 +485,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 				symbolFlag = 1;
 			}
 		}
-		if (registrant.password.length() > 8 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
+		if (registrant.password.length() > 7 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
 			passwordFlag++;
 		}
 		if (passwordFlag == 0) {
@@ -483,8 +501,34 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			cout << "Passwords do not match. ";
 		}
 	}
-	//FILES append registrant to files
-	//FILES generate parent ID number, compare with extant IDs, if fresh assign
+
+	//Assign ID Number
+	srand(time(NULL));
+	int IDFlag = 0;
+	while (IDFlag == 0) {
+		int id = rand();
+		//FILES compare ID against all ID numbers in parent file. If not found there, registran.ID = id, IDFLag++
+	}
+
+	//Writing to File - CURRENTLY NOT WORKING. stalls out when it should write; file is never created.
+	fstream ParentList("Parents.csv", ios::app);//Open file
+	//Write registrant details into teacher file:
+	ParentList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.emergencyPh << "," << registrant.coCarers << "," << registrant.childFirstName << "," << registrant.childLastName << "," << registrant.classroom << "," << registrant.username << "," << registrant.password << endl;
+	ParentList.close();//Close file
+
+	//Register another?
+	string another = "0";
+	while (another != "1" && another != "2") {
+		cout << "Register another parent's account? Enter 1 to do so or 2 to return to the main menu.";
+		cin >> another;
+		if (another == "1") {
+			parentRegister(&children, &teachers, &parents, &admin);
+		}
+		else if (another == "2") {
+			mainMenu(&children, &teachers, &parents, &admin);
+		}
+	}
+
 	//FILES Write parent ID number into child's file
 }
 
@@ -535,7 +579,7 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 			cout << "Error. Please type only the number 1, 2, or 3 and press enter.\n";
 		}
 	}
-	//FILES append registrant to files
+	//FILES append registrant to classroom file
 }
 
 void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -551,7 +595,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	getline(cin, firstName);
 	cout << "Please enter the student's last name(s): ";
 	getline(cin, lastName);
-	//FILES Look through classroom file, find student by name, copy into updatee
+	//FILES Look through this teacher's classroom file, find student by name, copy into updatee
 	cout << "Please enter the maths results: ";
 	getline(cin, updatee.maths);
 	cout << "Please enter the science results: ";
@@ -562,6 +606,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	getline(cin, updatee.writing);
 	cout << "Please enter the average across other results: ";
 	getline(cin, updatee.others);
+	//FILES write updatee over record in classroom file
 
 //Learning Progress
 	string progress = "0";
@@ -651,7 +696,7 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Parent> parents = *p;
 	Admin admin = *a;
 
-	//Determine which child
+	//Determine Which Child's records to delete
 	string firstName;
 	string lastName;
 	string classroom;
@@ -664,7 +709,7 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	getline(cin, classroom);
 	//FILES Find child record, retake inputs if 
 
-	//Confirm delete
+	//Confirm Deletion
 	cout << "Record found. Are you sure you wish to delete this data? Enter 1 to confirm or 2 to cancel.";
 	string selection;
 	cin >> selection;
@@ -687,6 +732,10 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 }
 
 //All Files work needs doing
+	//File for teachers
+	//File for parents
+	//File containing all classroom names
+	//File for each class containing student records
 
 //Functions Still Needed
 	//Parent - see child's report
@@ -695,8 +744,12 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	//Admin - see report of students who need help "The report should include, classroom number, student full name, learning progress of each subject, teacher nameand their parents contact number."
 
 //Design menus nicely - headings, colours, dividing lines
-		//Include cancel options to avoid trapping users
+	//Include cancel options to avoid trapping users
+	//Include a "register/update another? prompt where approriate"
+	//Include better explanations of input formats (eg classroom numbers) and conditions(no two students in the same class with the same name, one parent account per kid)
+	//Maybe output all extant classrooms for classroom questions to help epople select the one? Or make a selection menu with an add a class option? Worth noting Beula says we only need one classroom as a proof of concept
 
 //Other potential improvements
 	//Pass only necessary vectors
 	//Login as function? save some lines of code
+	//give more options for admin to delete/edit files for parents/teachers
