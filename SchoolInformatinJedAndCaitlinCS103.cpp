@@ -579,7 +579,7 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	}
 
 	//Writing to File
-	fstream Classroom("201.csv", ios::app);//Open file
+	fstream Classroom("201.csv", ios::app);//For this assessment, with the blessing of our tutor Beula, we have hardcoded a single class file. If we had a real school with defined classrooms I would code a function to write to each of the rooms and create and if/else if/else statement that ran the function using the filename that matches the relevant classroom.
 	//Write registrant details into teacher file:
 	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << endl;
 	Classroom.close();//Close file
