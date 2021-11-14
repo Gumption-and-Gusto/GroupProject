@@ -13,6 +13,7 @@ struct Child {
 	string preferredName;
 	string gender;
 	string pronouns;
+	string DOB;
 	string classroom;
 	string maths;
 	string science;
@@ -23,12 +24,13 @@ struct Child {
 	int parent;//This will be a backend ID #
 
 	//Constructor
-	Child(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string cr = "", string m = "", string s = "", string w = "", string r = "", string o = "", string pr = "", int pa = 0) {
+	Child(string fn = "", string ln = "", string pn = "", string g = "", string prn = "", string d = "", string cr = "", string m = "", string s = "", string w = "", string r = "", string o = "", string pr = "", int pa = 0) {
 		firstName = fn;
 		lastName = ln;
 		preferredName = pn;
 		gender = g;
 		pronouns = prn;
+		DOB = d;
 		classroom = cr;
 		maths = m;
 		science = s;
@@ -147,6 +149,131 @@ int main()
 	vector <Teacher> teachers;
 	vector <Parent> parents;
 	Admin admin;
+
+	//Reading files into vectors
+
+	//Reading from children file
+	fstream childList("201.csv", ios::in);//We are using only one classroom file, but if I had multiple I would open them, read from them, push the info into the children vector and one close the file after the other
+	Child readChild;
+	string line;
+	while (getline(childList, line)) {
+		istringstream linestream(line);
+		string datum;
+		getline(linestream, datum, ',');
+		readChild.firstName = datum;
+		getline(linestream, datum, ',');
+		readChild.lastName = datum;
+		getline(linestream, datum, ',');
+		readChild.preferredName = datum;
+		getline(linestream, datum, ',');
+		readChild.gender = datum;
+		getline(linestream, datum, ',');
+		readChild.pronouns = datum;
+		getline(linestream, datum, ',');
+		readChild.DOB = datum;
+		getline(linestream, datum, ',');
+		readChild.classroom = datum;
+		getline(linestream, datum, ',');
+		readChild.maths = datum;
+		getline(linestream, datum, ',');
+		readChild.science = datum;
+		getline(linestream, datum, ',');
+		readChild.reading = datum;
+		getline(linestream, datum, ',');
+		readChild.writing = datum;
+		getline(linestream, datum, ',');
+		readChild.others = datum;
+		getline(linestream, datum, ',');
+		readChild.progress = datum;
+		getline(linestream, datum, ',');
+		stringstream ss(datum);//converting string into int
+		ss >> readChild.parent;//the converted int value will be given to readParent.ID
+		//Push to vector
+		children.push_back(readChild);
+	}
+	childList.close();
+
+	//Reading from Teacher file
+	fstream teacherList("Teachers.csv", ios::in);
+	Teacher readTeacher;
+	while (getline(teacherList, line)) {
+		istringstream linestream(line);
+		string datum;
+		getline(linestream, datum, ',');
+		readTeacher.firstName = datum;
+		getline(linestream, datum, ',');
+		readTeacher.lastName = datum;
+		getline(linestream, datum, ',');
+		readTeacher.title = datum;
+		getline(linestream, datum, ',');
+		readTeacher.preferredName = datum;
+		getline(linestream, datum, ',');
+		readTeacher.gender = datum;
+		getline(linestream, datum, ',');
+		readTeacher.pronouns = datum;
+		getline(linestream, datum, ',');
+		readTeacher.DOB = datum;
+		getline(linestream, datum, ',');
+		readTeacher.email = datum;
+		getline(linestream, datum, ',');
+		readTeacher.Ph = datum;
+		getline(linestream, datum, ',');
+		readTeacher.classroom = datum;
+		getline(linestream, datum, ',');
+		readTeacher.year = datum;
+		getline(linestream, datum, ',');
+		readTeacher.username = datum;
+		getline(linestream, datum, ',');
+		readTeacher.password = datum;
+		//Push to vector
+		teachers.push_back(readTeacher);
+	}
+	teacherList.close();
+
+	//Reading from Parent file
+	fstream parentList("Parents.csv", ios::in);
+	Parent readParent;
+	while (getline(parentList, line)) {
+		istringstream linestream(line);
+		string datum;
+		getline(linestream, datum, ',');
+		readParent.firstName = datum;
+		getline(linestream, datum, ',');
+		readParent.lastName = datum;
+		getline(linestream, datum, ',');
+		readParent.title = datum;
+		getline(linestream, datum, ',');
+		readParent.preferredName = datum;
+		getline(linestream, datum, ',');
+		readParent.gender = datum;
+		getline(linestream, datum, ',');
+		readParent.pronouns = datum;
+		getline(linestream, datum, ',');
+		readParent.DOB = datum;
+		getline(linestream, datum, ',');
+		readParent.email = datum;
+		getline(linestream, datum, ',');
+		readParent.Ph = datum;
+		getline(linestream, datum, ',');
+		readParent.emergencyPh = datum;
+		getline(linestream, datum, ',');
+		readParent.childFirstName = datum;
+		getline(linestream, datum, ',');
+		readParent.childLastName = datum;
+		getline(linestream, datum, ',');
+		readParent.classroom = datum;
+		getline(linestream, datum, ',');
+		readParent.username = datum;
+		getline(linestream, datum, ',');
+		readParent.password = datum;
+		getline(linestream, datum, ',');
+		stringstream ss(datum);//converting string into int
+		ss >> readParent.ID;//the converted int value will be given to readParent.ID
+		//Push to vector
+		parents.push_back(readParent);
+	}
+	parentList.close();
+
 	mainMenu(&children, &teachers, &parents, &admin);
 }
 
@@ -499,19 +626,25 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 		}
 	}
 
-	//Assign ID Number
+	//Assign ID Number, checking that it is not already in use
 	srand(time(NULL));
 	int IDFlag = 0;
-	while (IDFlag == 0) {
+	while (registrant.ID == 0) {
 		int id = rand();
-		//FILES compare ID against all ID numbers in parent file. If not found there, registrant.ID = id, IDFLag++
-		IDFlag++;
+		for (int i = 0; i < parents.size(); i++) {
+			if (parents[i].ID == id) {
+				IDFlag++;
+			}
+		}
+		if (IDFlag == 0) {
+			registrant.ID = id;
+		}
 	}
 
 	//Writing to File
 	fstream ParentList("Parents.csv", ios::app);//Open file
 	//Write registrant details into teacher file:
-	ParentList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.emergencyPh << "," << registrant.childFirstName << "," << registrant.childLastName << "," << registrant.classroom << "," << registrant.username << "," << registrant.password << endl;
+	ParentList << registrant.firstName << "," << registrant.lastName << "," << registrant.title << "," << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.email << "," << registrant.Ph << "," << registrant.emergencyPh << "," << registrant.childFirstName << "," << registrant.childLastName << "," << registrant.classroom << "," << registrant.username << "," << registrant.password << "," << registrant.ID << endl;
 	ParentList.close();//Close file
 
 	//Register another?
@@ -547,6 +680,8 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	getline(cin, registrant.preferredName);
 	cout << "Please enter the student's pronouns: ";
 	getline(cin, registrant.pronouns);
+	cout << "Please enter the student's date of birth: ";
+	getline(cin, registrant.DOB);
 	cout << "Please enter the classroom for this student: ";
 	getline(cin, registrant.classroom);
 	cout << "Please enter the maths results (if known): ";
@@ -581,7 +716,7 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	//Writing to File
 	fstream Classroom("201.csv", ios::app);//For this assessment, with the blessing of our tutor Beula, we have hardcoded a single class file. If we had a real school with defined classrooms I would code a function to write to each of the rooms and create and if/else if/else statement that ran the function using the filename that matches the relevant classroom.
 	//Write registrant details into teacher file:
-	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << endl;
+	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << endl;
 	Classroom.close();//Close file
 
 	//Register another?
@@ -687,6 +822,16 @@ void childUpdate(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		cout << "Please enter the student's new pronouns: ";
 		getline(cin, updatee.pronouns);
 	}
+	update = askUpdate("date of birth");
+	if (update == true) {
+		cout << "Please enter the student's new pronouns: ";
+		getline(cin, updatee.DOB);
+	}
+	update = askUpdate("classroom");
+	if (update == true) {
+		cout << "Please enter the student's new pronouns: ";
+		getline(cin, updatee.classroom);
+	}
 	update = askUpdate("marks for maths");
 	if (update == true) {
 		cout << "Please enter the new maths results (if known): ";
@@ -779,22 +924,21 @@ void childDelete(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 
 bool askUpdate(string field) {
 	cout << "Would you like to update the student's " << field << "?";
-	bool update;
+
 	string answer;
 	while (answer != "1" && answer != "2") {
 		cout << "\nEnter 1 to update or 2 to leave this data as is.";
 		cin >> answer;
 		if (answer == "1") {
-			update = true;
+			return true;
 		}
 		else if (answer == "2") {
-			update = false;
+			return false;
 		}
 		else {
 			cout << "Error. Please only type the number, then press enter.";
 		}
 	}
-	return update;
 }
 
 //All Files work needs doing
