@@ -1,1 +1,9 @@
-﻿  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\jedda\Documents\CS103GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
+﻿  SchoolInformatinJedAndCaitlinCS103.cpp
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(448,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(477,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(560,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(594,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(630,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(634,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(942): warning C4715: 'askUpdate': not all control paths return a value
+  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
