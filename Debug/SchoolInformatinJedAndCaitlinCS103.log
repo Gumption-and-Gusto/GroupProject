@@ -1,7 +1,1 @@
-﻿  SchoolInformatinJedAndCaitlinCS103.cpp
-C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(323,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(352,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(435,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(471,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(507,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
+﻿  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\jedda\Documents\CS103GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe

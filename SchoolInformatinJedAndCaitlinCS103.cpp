@@ -504,7 +504,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	int IDFlag = 0;
 	while (IDFlag == 0) {
 		int id = rand();
-		//FILES compare ID against all ID numbers in parent file. If not found there, registran.ID = id, IDFLag++
+		//FILES compare ID against all ID numbers in parent file. If not found there, registrant.ID = id, IDFLag++
 		IDFlag++;
 	}
 
