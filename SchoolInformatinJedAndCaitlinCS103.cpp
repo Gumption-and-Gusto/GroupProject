@@ -423,7 +423,7 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
-	if (username == admin[0].username) {
+	if (username == admin.username) {
 		cout << "Please enter your password: ";
 		getline(cin, password);
 	}
@@ -449,16 +449,16 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	}
 
 	//Password
-	if (password == admin[0].password) {
-		cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+	if (password == admin.password) {
+		cout << "\nWelcome " << admin.username << ", you are now logged in.";
 		//ADMIN MENU HERE
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
 		cin.ignore();
 		getline(cin, password);
-		if (password == admin[0].password) {
-			cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+		if (password == admin.password) {
+			cout << "\nWelcome " << admin.username << ", you are now logged in.";
 			//ADMIN MENU HERE
 		}
 		else {
@@ -467,8 +467,8 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 			getline(cin, password);
 
 		}
-		if (password == admin[0].password) {
-			cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+		if (password == admin.password) {
+			cout << "\nWelcome " << admin.username << ", you are now logged in.";
 			//ADMIN MENU HERE
 		}
 		else {
@@ -477,8 +477,6 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 			getline(cin, password);
 		}
 	}
-}
-
 }
 
 void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -538,7 +536,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	//Password
 	if (password == parents[match].password) {
 		cout << "\nWelcome " << parents[match].title << parents[match].lastName << ", you are now logged in.";
-		//PRENTS MENU HERE
+		//PARENTS MENU HERE
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
