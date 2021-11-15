@@ -336,18 +336,79 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 
 	//Username
 	string username;
+	string password;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
-	//FILES check against usernames
-	//Add if for if username not in file
+	int match = 0;
+	int matchFlag = 0;
+	for (int i = 0; i < teachers.size(); i++) {
+		if (username == teachers[i].username) {
+			matchFlag++;
+			match = i;
+		}
+	}
+	if (matchFlag == 1) {
+		cout << "Please enter your password: ";
+		getline(cin, password);
+	}
+	else if (matchFlag > 1) {
+		cout << "Error. Multiple accounts detected. Please contact the administrator to resolve this issue.\nYou may attempt to log in regardless. Please enter your password: ";
+		cout << "Please enter your password: ";
+		getline(cin, password);
+	}
+	else {
+		cout << "\nNo user found with that name. Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Register an account\n\n\t3. Return to Main Menu\n\n";
+		string reenterUserMenu;
+		cin >> reenterUserMenu;
+		int reenterUserMenuFlag = 0;
+		while (reenterUserMenuFlag == 0) {
+			if (reenterUserMenu == "1") {
+				reenterUserMenuFlag++;
+				teacherLogin(&children, &teachers, &parents, &admin);
+			}
+			else if (reenterUserMenu == "2") {
+				reenterUserMenuFlag++;
+				teacherRegister(&children, &teachers, &parents, &admin);
+			}
+			else if (reenterUserMenu == "3") {
+				reenterUserMenuFlag++;
+				mainMenu(&children, &teachers, &parents, &admin);
+			}
+			else {
+				cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+				cin >> reenterUserMenu;
+			}
+		}
+	}
 
 	//Password
-	string password;
-	cout << "Please enter your password: ";
-	getline(cin, password);
-	//FILES check password against file
-	//Add if for if password doesn't match, 3 attempts only
+	if (password == teachers[match].password) {
+		cout << "\nWelcome " << teachers[match].title << teachers[match].lastName << ", you are now logged in.";
+		//TEACHER MENU HERE
+	}
+	else {
+		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
+		cin.ignore();
+		getline(cin, password);
+		if (password == teachers[match].password) {
+			cout << "\nWelcome " << teachers[match].title << teachers[match].lastName << ", you are now logged in.";
+		}
+		else {
+			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
+			cin.ignore();
+			getline(cin, password);
+
+		}
+		if (password == teachers[match].password) {
+			cout << "\nWelcome " << teachers[match].title << teachers[match].lastName << ", you are now logged in.";
+		}
+		else {
+			cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
+			cin.ignore();
+			getline(cin, password);
+		}
+	}
 }
 
 void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -358,18 +419,66 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 
 	//Username
 	string username;
+	string password;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
-	//FILES check against usernames
-	//Add if for if username not in file
+	if (username == admin[0].username) {
+		cout << "Please enter your password: ";
+		getline(cin, password);
+	}
+	else {
+		cout << "\nNo user found with that name. Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Return to Main Menu\n\n";
+		string reenterUserMenu;
+		cin >> reenterUserMenu;
+		int reenterUserMenuFlag = 0;
+		while (reenterUserMenuFlag == 0) {
+			if (reenterUserMenu == "1") {
+				reenterUserMenuFlag++;
+				adminLogin(&children, &teachers, &parents, &admin);
+			}
+			else if (reenterUserMenu == "2") {
+				reenterUserMenuFlag++;
+				mainMenu(&children, &teachers, &parents, &admin);
+			}
+			else {
+				cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+				cin >> reenterUserMenu;
+			}
+		}
+	}
 
-	string password;
-	//FILES check against usernames
-	cout << "Please enter your password: ";
-	getline(cin, password);
-	//FILES check password against file
-	//Add if for if password doesn't match, 3 attempts only
+	//Password
+	if (password == admin[0].password) {
+		cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+		//ADMIN MENU HERE
+	}
+	else {
+		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
+		cin.ignore();
+		getline(cin, password);
+		if (password == admin[0].password) {
+			cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+			//ADMIN MENU HERE
+		}
+		else {
+			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
+			cin.ignore();
+			getline(cin, password);
+
+		}
+		if (password == admin[0].password) {
+			cout << "\nWelcome " << admin[0] << ", you are now logged in.";
+			//ADMIN MENU HERE
+		}
+		else {
+			cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
+			cin.ignore();
+			getline(cin, password);
+		}
+	}
+}
+
 }
 
 void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -377,20 +486,83 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
 	//Username
 	string username;
+	string password;
 	cout << "Please enter your username: ";
 	cin.ignore();
 	getline(cin, username);
-	//FILES check against usernames
-	//Add if for if username not in file
+	int match = 0;
+	int matchFlag = 0;
+	for (int i = 0; i < parents.size(); i++) {
+		if (username == parents[i].username) {
+			matchFlag++;
+			match = i;
+		}
+	}
+	if (matchFlag == 1) {
+		cout << "Please enter your password: ";
+		getline(cin, password);
+	}
+	else if (matchFlag > 1) {
+		cout << "Error. Multiple accounts detected. Please contact the administrator to resolve this issue.\nYou may attempt to log in regardless. Please enter your password: ";
+		cout << "Please enter your password: ";
+		getline(cin, password);
+	}
+	else {
+		cout << "\nNo user found with that name. Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Register an account\n\n\t3. Return to Main Menu\n\n";
+		string reenterUserMenu;
+		cin >> reenterUserMenu;
+		int reenterPassMenuFlag = 0;
+		while (reenterPassMenuFlag == 0) {
+			if (reenterUserMenu == "1") {
+				reenterPassMenuFlag++;
+				parentLogin(&children, &teachers, &parents, &admin);
+			}
+			else if (reenterUserMenu == "2") {
+				reenterPassMenuFlag++;
+				parentRegister(&children, &teachers, &parents, &admin);
+			}
+			else if (reenterUserMenu == "1") {
+				reenterPassMenuFlag++;
+				mainMenu(&children, &teachers, &parents, &admin);
+			}
+			else {
+				cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
+				cin >> reenterUserMenu;
+			}
+		}
+	}
 
-	string password;
-	//FILES check against usernames
-	cout << "Please enter your password: ";
-	getline(cin, password);
-	//FILES check password against file
-	//Add if for if password doesn't match, 3 attempts only
+	//Password
+	if (password == parents[match].password) {
+		cout << "\nWelcome " << parents[match].title << parents[match].lastName << ", you are now logged in.";
+		//PRENTS MENU HERE
+	}
+	else {
+		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
+		cin.ignore();
+		getline(cin, password);
+		if (password == parents[match].password) {
+			cout << "\nWelcome " << parents[match].title << parents[match].lastName << ", you are now logged in.";
+		}
+		else {
+			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
+			cin.ignore();
+			getline(cin, password);
+
+
+			if (password == parents[match].password) {
+				cout << "\nWelcome " << parents[match].title << parents[match].lastName << ", you are now logged in.";
+			}
+			else {
+				cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
+				cin.ignore();
+				getline(cin, password);
+			}
+		}
+	}
 }
 
 void whichRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
@@ -941,11 +1113,7 @@ bool askUpdate(string field) {
 	}
 }
 
-//All Files work needs doing
-	//File for teachers
-	//File for parents
-	//File containing all classroom names
-	//File for each class containing student records
+//File integration - see FILES comments
 
 //Functions Still Needed
 	//Parent - see child's report
