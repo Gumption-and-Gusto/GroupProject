@@ -648,6 +648,26 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	getline(cin, registrant.year);
 	cout << "\nPlease enter choose a username: ";
 	getline(cin, registrant.username);
+	//Check if that username is taken
+	int usernameAvailableFlag = 0;
+	if (teachers.size() > 0) {//Prevents this code from running on initial registration
+		while (usernameAvailableFlag == 0) {
+			int subFlag = 0;
+			for (int i = 0; i < teachers.size(); i++) {
+				if (registrant.username == teachers[i].username) {
+					subFlag++;
+				}
+			}
+			if (subFlag != 0) {
+				cout << "Sorry, that username has already been taken.";
+				cout << "Please enter choose a username: ";
+				getline(cin, registrant.username);
+			}
+			else {
+				usernameAvailableFlag++;
+			}
+		}
+	}
 	//FILES Check against all extant usernames, alert and offer input again if conflict
 	cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
@@ -766,6 +786,26 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	//FILES Check classroom file for matching child, retake names and class if none found or tell them to contact admin
 	cout << "\nPlease enter choose a username: ";
 	getline(cin, registrant.username);
+	//Check if that username is taken
+	int usernameAvailableFlag = 0;
+	if (parents.size() > 0) {// Prevents this code from running on initial registration
+			while (usernameAvailableFlag == 0) {
+				int subFlag = 0;
+				for (int i = 0; i < parents.size(); i++) {
+					if (registrant.username == parents[i].username) {
+						subFlag++;
+					}
+				}
+				if (subFlag != 0) {
+					cout << "Sorry, that username has already been taken.";
+					cout << "Please enter choose a username: ";
+					getline(cin, registrant.username);
+				}
+				else {
+					usernameAvailableFlag++;
+				}
+			}
+	}
 	//FILES Check against all extant parent usernames, retake input if taken
 	cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
