@@ -5,3 +5,5 @@ C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\GroupProjectSchoolInfor
 C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
 C:\Users\270102467\OneDrive - UP Education\Desktop\CS103\Pulling in Film Class Git Work\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.pdb
 C:\Users\jedda\Documents\CS103GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
+C:\Users\270098571\OneDrive - UP Education\Documents\Github\GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
+C:\Users\270098571\OneDrive - UP Education\Documents\Github\GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.pdb
