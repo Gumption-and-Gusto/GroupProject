@@ -147,15 +147,17 @@ void adminMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a
 void deleteChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a);
 void teacherMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount);
 void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount);
+void displayStudentRecord(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount);
+void displayParentsRecord(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount);
 bool askUpdate(string field);
 
 int main()
 {	
-	vector <Child> children = readChildren201();//I'm not sure that we'll actually need to pass these around all the time. I built it with these vectors in case but we may end up passing them a lot less
+	vector <Child> children = readChildren201();
 	vector <Teacher> teachers = readTeachers();
 	vector <Parent> parents = readParents();
 	Admin admin;
-	mainMenu(&children, &teachers, &parents, &admin);
+	mainMenu(&children, &teachers, &parents, &admin);//I'm not sure that we'll actually need to pass these around all the time. I built it with these vectors in case but we may end up passing them a lot less
 }
 
 //Function Definitions
@@ -972,6 +974,8 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	getline(cin, registrant.lastName);
 	cout << "\nPlease enter the student's preferred name: ";
 	getline(cin, registrant.preferredName);
+	cout << "\nPlease enter the student's gender: ";
+	getline(cin, registrant.gender);
 	cout << "\nPlease enter the student's pronouns: ";
 	getline(cin, registrant.pronouns);
 	cout << "\nPlease enter the student's date of birth: ";
@@ -991,7 +995,7 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	//Learning Progress - We take this via a number and write it in plain text to make it guaranteed consistent for the admin report to sleect them all
 	string progress = "0";
 	while (progress != "1" && progress != "2" && progress != "3") {
-		cout << "\nPlease enter the current overall learning progress (if known). Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
+		cout << "\nPlease enter the current overall learning progress. Enter 1 for Achieved, 2 for Progressing, or 3 for Needs Help: ";
 		cin >> progress;
 		if (progress == "1") {
 			registrant.progress = "Achieved";
@@ -1010,19 +1014,20 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	//Writing to File
 	fstream Classroom("201.csv", ios::app);//For this assessment, in consultation with our tutor Beula, we have hardcoded a single class file. If we had a real school with defined classrooms we would code a function to write to each of the rooms and create and if/else if/else statement that ran the correct function using the filename that matches the relevant classroom.
 	//Write registrant details into teacher file:
-	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << endl;
+	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << "," << registrant.progress << endl;
 	Classroom.close();//Close file
+	children = readChildren201();
 
 	//Register another?
 	string another = "0";
 	while (another != "1" && another != "2") {
-		cout << "\nRegister another teacher? Enter 1 to do so or 2 to return to the main menu. ";
+		cout << "\nRegister another student? Enter 1 to do so or 2 to return to your menu. ";
 		cin >> another;
 		if (another == "1") {
-			teacherRegister(&children, &teachers, &parents, &admin);
+			childRegister(&children, &teachers, &parents, &admin);
 		}
 		else if (another == "2") {
-			mainMenu(&children, &teachers, &parents, &admin);
+			adminMenu(&children, &teachers, &parents, &admin);
 		}
 	}
 }
@@ -1033,11 +1038,22 @@ void teacherMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Parent> parents = *p;
 	Admin admin = *a;
 	string menu = "0";
-	//CONTINUE BUILDING
 	while (menu != "1" && menu != "2") {
-		cout << "\nWhat would you like to do?\n\n\n\t1. Update one of your student's grades\n\n\t2. View one of your student's records\n\n\t3. ";
+		cout << "\nWhat would you like to do?\n\n\n\t1. Update one of your student's grades\n\n\t2. View one of your student's records\n\n\t3. View a parent's details";
+		cin >> menu;
+		if (menu == "1") {
+			updateGrades(&children, &teachers, &parents, &admin, currentAccount);
+		}
+		else if (menu == "2") {
+			displayStudentRecord(&children, &teachers, &parents, &admin, currentAccount);
+		}
+		else if (menu == "3") {
+			displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+		}
+		else {
+			cout << "Sorry, that wasn't one of the options. Please enter only the number.";
+		}
 	}
-	updateGrades(&children, &teachers, &parents, &admin, currentAccount);
 }
 
 void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount) {
@@ -1151,6 +1167,184 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	}
 }
 
+void displayStudentRecord(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string firstName;
+	string lastName;
+	Child display;
+	cout << "\nPlease enter the student's first name(s): ";
+	cin.ignore();
+	getline(cin, firstName);
+	cout << "\nPlease enter the student's last name(s): ";
+	getline(cin, lastName);
+	int childFoundFlag = 0;
+	int match = 0;
+	for (int i = 0; i < children.size(); i++) {
+		if (children[i].firstName == firstName && children[i].lastName == lastName && children[i].classroom == currentAccount.classroom) {
+			childFoundFlag++;
+			match = i;
+		}
+	}
+	string menu = "0";
+	if (childFoundFlag == 0) {
+		cout << "No student found with those names.";
+		while (menu != "1" && menu != "2") {
+			cout << "Enter 1 to retry or 2 to return to your menu.";
+			cin >> menu;
+			if (menu == "1") {
+				displayStudentRecord(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else if (menu == "2") {
+				teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else {
+				">>Error. Please enter only 1 or 2.<< ";
+			}
+		}
+	}
+	else if (childFoundFlag > 1) {
+		cout << ">>Error. Multiple records found in this class with that name. Please contact administrator.<<\n";
+		menu = "0";
+		while (menu != "1" && menu != "2") {
+			cout << "Enter 1 to retry or 2 to return to your menu.";
+			cin >> menu;
+			if (menu == "1") {
+				displayStudentRecord(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else if (menu == "2") {
+				teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else {
+				cout << ">>Error. Please enter only the number 1 or 2.<< ";
+			}
+		}
+	}
+	else {
+		cout << "\nRecord found\n\n" <<children[match].firstName << " " << children[match].lastName << "\nPrefers to be called " << children[match].preferredName << "\nGender: " << children[match].gender << " (uses " << children[match].pronouns << " pronouns)\nBorn " << children[match].DOB << "\nCurrent grades:\nMaths: " << children[match].maths << "\nScience: " << children[match].science << "\nWriting: " << children[match].writing << "\nReading: " << children[match].reading << "\nOthers: " << children[match].others << "\nOverall assessment of learning progress: " << children[match].progress;
+	}
+}
+
+void displayParentsRecord(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, Teacher currentAccount) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector<Parent> parents = *p;
+	Admin admin = *a;
+	string firstName;
+	string lastName;
+	Child display;
+	cout << "\nPlease enter the student's first name(s): ";
+	cin.ignore();
+	getline(cin, firstName);
+	cout << "\nPlease enter the student's last name(s): ";
+	getline(cin, lastName);
+	int childFoundFlag = 0;
+	int match = 0;
+	for (int i = 0; i < children.size(); i++) {
+		if (children[i].firstName == firstName && children[i].lastName == lastName && children[i].classroom == currentAccount.classroom) {
+			childFoundFlag++;
+			match = i;
+		}
+	}
+	string menu = "0";
+	if (childFoundFlag == 0) {
+		cout << "No student found with those names.";
+		while (menu != "1" && menu != "2") {
+			cout << "Enter 1 to retry or 2 to return to your menu.";
+			cin >> menu;
+			if (menu == "1") {
+				displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else if (menu == "2") {
+				teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else {
+				">>Error. Please enter only 1 or 2.<< ";
+			}
+		}
+	}
+	else if (childFoundFlag > 1) {
+		cout << ">>Error. Multiple records found in this class with that name. Please contact administrator.<<\n";
+		menu = "0";
+		while (menu != "1" && menu != "2") {
+			cout << "Enter 1 to retry or 2 to return to your menu.";
+			cin >> menu;
+			if (menu == "1") {
+				displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else if (menu == "2") {
+				teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+			}
+			else {
+				cout << ">>Error. Please enter only the number 1 or 2.<< ";
+			}
+		}
+	}
+	else {
+		int parentFoundFlag = 0;
+		int parentMatch = 0;
+		for (int i = 0; i < parents.size(); i++) {
+			if (children[match].parent == parents[i].ID) {
+				parentFoundFlag++;
+				parentMatch = i;
+			}
+		}
+		menu = "0";
+		if (parentFoundFlag == 0) {
+			cout << "No parent found linked to that student's record";
+			while (menu != "1" && menu != "2") {
+				cout << "Enter 1 to retry or 2 to return to your menu.";
+				cin >> menu;
+				if (menu == "1") {
+					displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else if (menu == "2") {
+					teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else {
+					">>Error. Please enter only 1 or 2.<< ";
+				}
+			}
+		}
+		else if (parentFoundFlag > 1) {
+			cout << ">>Error. Multiple parent records found linked to that student's record. Please contact administrator.<<\n";
+			menu = "0";
+			while (menu != "1" && menu != "2") {
+				cout << "Enter 1 to retry or 2 to return to your menu.";
+				cin >> menu;
+				if (menu == "1") {
+					displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else if (menu == "2") {
+					teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else {
+					cout << ">>Error. Please enter only the number 1 or 2.<< ";
+				}
+			}
+		}
+		else {
+			cout << "\nRecord found\n\n" << parents[parentMatch].title << " " << parents[parentMatch].firstName << " " << parents[parentMatch].lastName << "\nPrefers to be called " << parents[parentMatch].preferredName << "\nGender: " << parents[parentMatch].gender << " (uses " << parents[parentMatch].pronouns << " pronouns)\nBorn " << parents[parentMatch].DOB << "\nContact details:\nemail: " << parents[parentMatch].email << "\nPhone: " << parents[parentMatch].Ph << "\nDaytime emergency phone: " << parents[parentMatch].emergencyPh;
+			menu = "0";
+			while (menu != "1" && menu != "2") {
+				cout << "Enter 1 to check another parent's record or 2 to return to your menu.";
+				cin >> menu;
+				if (menu == "1") {
+					displayParentsRecord(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else if (menu == "2") {
+					teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
+				}
+				else {
+					cout << ">>Error. Please enter only the number 1 or 2.<< ";
+				}
+			}
+		}
+	}
+}
+
 void adminMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a) {
 	string menu = "0";
 	while (menu != "1" && menu != "2") {
@@ -1241,59 +1435,77 @@ void updateChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	}
 	else {
 		//Updating record
+		updatee = children[match];
 		bool update = askUpdate("first name");
 		if (update == true) {
 			cout << "\nPlease enter the student's new first name(s): ";
+			cin.ignore();
 			getline(cin, updatee.firstName);
 		}
 		update = askUpdate("last name");
 		if (update == true) {
 			cout << "\nPlease enter the student's new last name(s): ";
+			cin.ignore();
 			getline(cin, updatee.lastName);
 		}
 		update = askUpdate("preferred name");
 		if (update == true) {
 			cout << "\nPlease enter the student's new preferred name: ";
+			cin.ignore();
 			getline(cin, updatee.preferredName);
+		}
+		update = askUpdate("gender");
+		if (update == true) {
+			cout << "\nPlease enter the student's new gender: ";
+			cin.ignore();
+			getline(cin, updatee.gender);
 		}
 		update = askUpdate("pronouns");
 		if (update == true) {
 			cout << "\nPlease enter the student's new pronouns: ";
+			cin.ignore();
 			getline(cin, updatee.pronouns);
 		}
 		update = askUpdate("date of birth");
 		if (update == true) {
 			cout << "\nPlease enter the student's new pronouns: ";
+			cin.ignore();
 			getline(cin, updatee.DOB);
 		}
 		update = askUpdate("classroom");
 		if (update == true) {
 			cout << "\nPlease enter the student's new pronouns: ";
+			cin.ignore();
 			getline(cin, updatee.classroom);
 		}
 		update = askUpdate("marks for maths");
 		if (update == true) {
-			cout << "\nPlease enter the new maths results (if known): ";
+			cout << "\nPlease enter the new maths results: ";
+			cin.ignore();
 			getline(cin, updatee.maths);
 		}
 		update = askUpdate("marks for science");
 		if (update == true) {
-			cout << "\nPlease enter the new science results (if known): ";
+			cout << "\nPlease enter the new science results: ";
+			cin.ignore();
 			getline(cin, updatee.science);
 		}
 		update = askUpdate("marks for reading");
 		if (update == true) {
-			cout << "\nPlease enter the new reading results (if known): ";
+			cout << "\nPlease enter the new reading results: ";
+			cin.ignore();
 			getline(cin, updatee.reading);
 		}
 		update = askUpdate("marks for writing");
 		if (update == true) {
-			cout << "\nPlease enter the new writing results (if known): ";
+			cout << "\nPlease enter the new writing results: ";
+			cin.ignore();
 			getline(cin, updatee.writing);
 		}
 		update = askUpdate("marks for other subjects");
 		if (update == true) {
-			cout << "\nPlease enter the new average across other results (if known): ";
+			cout << "\nPlease enter the new average across other results: ";
+			cin.ignore();
 			getline(cin, updatee.others);
 		}
 		update = askUpdate("learning Progress");
