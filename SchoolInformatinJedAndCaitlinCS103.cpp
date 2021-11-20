@@ -1,4 +1,4 @@
-//See the bottom for a list of things that still need doing!
+//School Information System
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -153,6 +153,8 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 void displayParentsRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a,  string room);
 bool askUpdate(string field);
 void displayProgressLevel(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, string pl);
+void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, int currentID);
+bool askUpdateParent(string field);
 
 int main()
 {	
@@ -546,25 +548,20 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	}
 	else {
 		cout << "\nNo user found with that name. Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Register an account\n\n\t3. Return to Main Menu\n\n";
-		string reenterUserMenu;
-		cin >> reenterUserMenu;
-		int reenterPassMenuFlag = 0;
-		while (reenterPassMenuFlag == 0) {
+		string reenterUserMenu = "0";
+		while (reenterUserMenu != "1" && reenterUserMenu != "2" && reenterUserMenu != "3") {
+			cin >> reenterUserMenu;
 			if (reenterUserMenu == "1") {
-				reenterPassMenuFlag++;
 				parentLogin(&children, &teachers, &parents, &admin);
 			}
 			else if (reenterUserMenu == "2") {
-				reenterPassMenuFlag++;
 				parentRegister(&children, &teachers, &parents, &admin);
 			}
-			else if (reenterUserMenu == "1") {
-				reenterPassMenuFlag++;
+			else if (reenterUserMenu == "3") {
 				mainMenu(&children, &teachers, &parents, &admin);
 			}
 			else {
 				cout << "Sorry, that wasn't one of the options. Make sure you're only including the number.";
-				cin >> reenterUserMenu;
 			}
 		}
 	}
@@ -572,7 +569,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	//Password
 	if (password == parents[match].password) {
 		cout << "\nWelcome " << parents[match].title << " " << parents[match].lastName << ", you are now logged in.";
-		//PARENTS MENU HERE
+		parentMenu(&children, &teachers, &parents, &admin, parents[match].ID);
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
@@ -580,7 +577,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		getline(cin, password);
 		if (password == parents[match].password) {
 			cout << "\nWelcome " << parents[match].title << " " << parents[match].lastName << ", you are now logged in.";
-			//PARENTS MENU HERE
+			parentMenu(&children, &teachers, &parents, &admin, parents[match].ID);
 		}
 		else {
 			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
@@ -588,7 +585,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 			getline(cin, password);
 			if (password == parents[match].password) {
 				cout << "\nWelcome " << parents[match].title << " " << parents[match].lastName << ", you are now logged in.";
-				//PARENTS MENU HERE
+				parentMenu(&children, &teachers, &parents, &admin, parents[match].ID);
 			}
 			else {
 				cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
@@ -780,8 +777,15 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 		getline(cin, registrant.classroom);
 		for (int i = 0; i < children.size(); i++) {
 			if (children[i].firstName == registrant.childFirstName && children[i].lastName == registrant.childLastName && children[i].classroom == registrant.classroom) {
-				childFoundFlag++;
-				match = i;
+				if (children[i].parent == 0) {
+					childFoundFlag++;
+					match = i;
+				}
+				else {
+					cout << ">>Error. There is already a parent account associated with that child. Please confirm account details with any co-carers who may have already registered an account or contact the administrator to resolve this issue<<\nEnter 1 to return to the main menu";
+					cin >> menu;
+					mainMenu(&children, &teachers, &parents, &admin);
+				}
 			}
 		}
 		if (childFoundFlag == 0) {
@@ -812,7 +816,6 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			}
 		}
 		else {
-			cin.ignore();
 			cout << "\nPlease enter your first name(s): ";
 			getline(cin, registrant.firstName);
 			cout << "\nPlease enter your last name(s): ";
@@ -940,7 +943,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			//Rewriting children file to include ID
 			fstream Classroom("201.csv", ios::out);
 			for (int i = 0; i < children.size(); i++) {//This completely overwrites the file, presevering the data in order with no gap where the deleted record was
-				Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << endl;
+				Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others "," << children[i].progress << "," << children[i].parent << << endl;
 				Classroom.close();//Close file
 			}
 			children = readChildren201();//rereads file to use updated info
@@ -1017,7 +1020,7 @@ void childRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admi
 	//Writing to File
 	fstream Classroom("201.csv", ios::app);//For this assessment, in consultation with our tutor Beula, we have hardcoded a single class file. If we had a real school with defined classrooms we would code a function to write to each of the rooms and create and if/else if/else statement that ran the correct function using the filename that matches the relevant classroom.
 	//Write registrant details into teacher file:
-	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << "," << registrant.progress << endl;
+	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << "," << registrant.progress << "," << registrant.parent << endl;
 	Classroom.close();//Close file
 	children = readChildren201();
 
@@ -1041,8 +1044,8 @@ void teacherMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Parent> parents = *p;
 	Admin admin = *a;
 	string menu = "0";
-	while (menu != "1" && menu != "2") {
-		cout << "\nWhat would you like to do?\n\n\n\t1. Update one of your student's grades\n\n\t2. View one of your student's records\n\n\t3. View a parent's details";
+	while (menu != "1" && menu != "2" && menu != "3" && menu != "4") {
+		cout << "\nWhat would you like to do?\n\n\n\t1. Update one of your student's grades\n\n\t2. View one of your student's records\n\n\t3. View a parent's details\n\n\t4. Log out and return to the main menu\n\n\n";
 		cin >> menu;
 		if (menu == "1") {
 			updateGrades(&children, &teachers, &parents, &admin, currentAccount);
@@ -1052,6 +1055,9 @@ void teacherMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		}
 		else if (menu == "3") {
 			displayParentsRecordTeacher(&children, &teachers, &parents, &admin, currentAccount);
+		}
+		else if (menu == "4") {
+			mainMenu(&children, &teachers, &parents, &admin);
 		}
 		else {
 			cout << "Sorry, that wasn't one of the options. Please enter only the number.";
@@ -1148,7 +1154,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 		fstream Classroom("201.csv", ios::out);//For this assessment, with the blessing of our tutor Beula, we have hardcoded a single class file. If we had a real school with defined classrooms I would code a function to write to each of the rooms and create and if/else if/else statement that ran the function using the filename that matches the relevant classroom, selected from currentAccount.classroom.
 		//Write registrant details into teacher file:
 		for (int i = 0; i < children.size(); i++) {//This completely overwrites the file, presevering the data in order with the new grade
-			Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << endl;
+			Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << "," << children[i].progress << "," << children[i].parent << endl;
 			Classroom.close();//Close file
 		}
 		children = readChildren201();
@@ -1568,7 +1574,7 @@ void updateChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		//Writing to File
 		fstream Classroom("201.csv", ios::out);
 		for (int i = 0; i < children.size(); i++) {//This completely overwrites the file, presevering the data in order with the new infotmation
-			Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << endl;
+			Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << "," << children[i].progress << "," << children[i].parent << endl;
 			Classroom.close();//Close file
 		}
 		children = readChildren201();
@@ -1659,7 +1665,7 @@ void deleteChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 				//Writing to File
 				fstream Classroom("201.csv", ios::out);
 				for (int i = 0; i < children.size(); i++) {//This completely overwrites the file, presevering the data in order with no gap where the deleted record was
-					Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << endl;
+					Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << "," << children[i].progress << "," << children[i].parent << endl;
 					Classroom.close();//Close file
 				}
 				children = readChildren201();
@@ -1905,21 +1911,237 @@ void displayProgressLevel(vector<Child>* c, vector<Teacher>* t, vector<Parent>* 
 	}
 }
 
-//Functions Still Needed
-	//Parent - see child's report
-	//Parent - see school notices
-	//Admin - see report of progressing students
-	//Admin - see report of students who need help "The report should include, classroom number, student full name, learning progress of each subject, teacher name and their parents contact number."
-//That child already has a parent alert
+void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, int currentID) {
+	vector<Child> children = *c;
+	vector<Teacher> teachers = *t;
+	vector <Parent> parents = *p;
+	int match = -1;
+	cout << "a";
+	for (int i = 0; i < parents.size(); i++) {
+		if (currentID == parents[i].ID) {
+			match = i;
+			cout << "ab";
+		}
+		cout << "b";
+	}
+	int childMatch = -1;
+	for (int i = 0; i < children.size(); i++) {
+		if (currentID == children[i].parent) {
+			childMatch = i;
+			cout << "c";
+		}
+		cout << "d";
+	}
+	cout << "e";
+	string menu = "0";
+	while (menu != "1" && menu != "2" && menu != "3" && menu != "4" && menu != "5") {
+		cout << "\nWhat would you like to do?\n\n\n\t1. View " << children[childMatch].firstName << "'s report\n\n\t2. Update " << children[childMatch].firstName << "'s details\n\n\t3. Update your details\n\n\t4. View school notices\n\n\t5. Log out and return to the main menu\n\n\n";
+		cin >> menu;
+		if (menu == "1") {
+			cout << children[childMatch].firstName << " " << children[childMatch].lastName << "'s Report:\nOverall progress: " << children[childMatch].progress << "\nMaths: " << children[childMatch].maths << "\nScience: " << children[childMatch].science << "\nReading: " << children[childMatch].reading << "\nWriting" << children[childMatch].writing << "\nOther Subjects: " << children[childMatch].others << "\n\nEnter 1 to return to your menu\n";
+			cin >> menu;
+			parentMenu(&children, &teachers, &parents, a, currentID);
+		}
+		else if (menu == "2") {
+			bool update = askUpdate("first name");
+			if (update == true) {
+				cout << "\nPlease enter the student's new first name(s): ";
+				cin.ignore();
+				getline(cin, children[match].firstName);
+			}
+			update = askUpdate("last name");
+			if (update == true) {
+				cout << "\nPlease enter the student's new last name(s): ";
+				cin.ignore();
+				getline(cin, children[match].lastName);
+			}
+			update = askUpdate("preferred name");
+			if (update == true) {
+				cout << "\nPlease enter the student's new preferred name: ";
+				cin.ignore();
+				getline(cin, children[match].preferredName);
+			}
+			update = askUpdate("gender");
+			if (update == true) {
+				cout << "\nPlease enter the student's new gender: ";
+				cin.ignore();
+				getline(cin, children[match].gender);
+			}
+			update = askUpdate("pronouns");
+			if (update == true) {
+				cout << "\nPlease enter the student's new pronouns: ";
+				cin.ignore();
+				getline(cin, children[match].pronouns);
+			}
+			//Writing to File
+			fstream Classroom("201.csv", ios::out);
+			for (int i = 0; i < children.size(); i++) {//This completely overwrites the file, presevering the data in order with the new infotmation
+				Classroom << children[i].firstName << "," << children[i].lastName << "," << children[i].preferredName << "," << children[i].gender << "," << children[i].pronouns << "," << children[i].DOB << "," << children[i].classroom << "," << children[i].maths << "," << children[i].science << "," << children[i].reading << "," << children[i].writing << "," << children[i].others << "," << children[i].progress << "," << children[i].parent << endl;
+				Classroom.close();//Close file
+			}
+			children = readChildren201();
+			cout << "Records updated. Enter 1 to return to your menu\n";
+			cin >> menu;
+			parentMenu(&children, &teachers, &parents, a, currentID);
+		}
+		else if (menu == "3") {	
+			bool update;
+			update = askUpdateParent("first name");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your first name(s): ";
+				getline(cin, parents[match].firstName);
+			}
+			update = askUpdate("last name");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your last name(s): ";
+				getline(cin, parents[match].lastName);
+			}
+			update = askUpdate("title");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your preferred title: (Mr. Mx. Dr. Miss etc) ";
+				getline(cin, parents[match].title);
+			}
+			update = askUpdate("preferred name");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your preferred name: ";
+				getline(cin, parents[match].preferredName);
+			}
+			update = askUpdate("pronouns");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your pronouns: ";
+				getline(cin, parents[match].pronouns);
+			}
+			update = askUpdate("gender");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your gender: ";
+				getline(cin, parents[match].gender);
+			}
+			update = askUpdate("email");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your email: ";
+				getline(cin, parents[match].email);
+			}
+			//Email Validation
+			int emailFlag = 0;
+			while (emailFlag == 0) {
+				for (int i = 0; i < parents[match].email.length(); i++) {
+					if (parents[match].email[i] == '@') {
+						emailFlag = 1;
+					}
+				}
+				if (emailFlag == 0) {
+					cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<< ";
+					getline(cin, parents[match].email);
+				}
+			}
+			update = askUpdate("contact number");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter your contact number: ";
+				getline(cin, parents[match].Ph);
+			}
+			update = askUpdate("email");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter a daytime contact number to use in emergencies: ";
+				getline(cin, parents[match].emergencyPh);
+			}
+			update = askUpdate("email");
+			if (update == true) {
+				cin.ignore();
+				cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
+				//Password Validation
+				int passwordFlag = 0;
+				int upperFlag = 0;
+				int lowerFlag = 0;
+				int digitFlag = 0;
+				int symbolFlag = 0;
+				int symbolSubFlag = 0;
+				while (passwordFlag == 0) {
+					getline(cin, parents[match].password);
+					for (int i = 0; i < parents[match].password.length(); i++) {
+						symbolSubFlag = 0;
+						if (islower(parents[match].password[i])) {
+							lowerFlag = 1;
+							symbolSubFlag++;
+						}
+						if (isupper(parents[match].password[i])) {
+							upperFlag = 1;
+							symbolSubFlag++;
+						}
+						if (isdigit(parents[match].password[i])) {
+							digitFlag = 1;
+							symbolSubFlag++;
+						}
+						if (symbolSubFlag == 0) {
+							symbolFlag = 1;
+						}
+					}
+					if (parents[match].password.length() > 7 && digitFlag == 1 && upperFlag == 1 && lowerFlag == 1 && symbolFlag == 1) {
+						passwordFlag++;
+					}
+					if (passwordFlag == 0) {
+						cout << ">>Error. Passwords must be 8 or more characters, including upper and lower case letters, numbers, and non-alphanumeric symbols. Please enter a valid password<< ";
+					}
+				}
+				//Password Confirmation
+				while (parents[match].confirmPassword != parents[match].password) {
+					cout << "\nPlease confirm your password: ";
+					getline(cin, parents[match].confirmPassword);
+					if (parents[match].confirmPassword != parents[match].password) {
+						cout << "\nPasswords do not match. ";
+					}
+				}
+			}
+			//Writing to File
+			fstream ParentList("Parents.csv", ios::out);
+			for (int i = 0; i < parents.size(); i++) {//This completely overwrites the file, presevering the data in order with the new infotmation
+				ParentList << parents[i].firstName << "," << parents[i].lastName << "," << parents[i].title << "," << parents[i].preferredName << "," << parents[i].gender << "," << parents[i].pronouns << "," << parents[i].DOB << "," << parents[i].email << "," << parents[i].Ph << "," << parents[i].emergencyPh << "," << parents[i].childFirstName << "," << parents[i].childLastName << "," << parents[i].classroom << "," << parents[i].username << "," << parents[i].password << "," << parents[i].ID << endl;
+				ParentList.close();//Close file
+			}
+			parents = readParents();
+		}
+		else if (menu == "4") {
+			cout << "Atheltics day 28th January - wear your house colours and comfortable running shoes!\n\nAuditions for the school production of CHESS! The Musical - 3:30pm in room 201 Tuesday afternoon\n\nYu-Gi-Oh trading card ban is tentatively lifted, but we will not hesitate to reinstate it if there is another incident\n\n\nEnter 1 to return to your menu\n";
+			cin >> menu;
+			parentMenu(&children, &teachers, &parents, a, currentID);
+		}
+		else if (menu == "5") {
+			mainMenu(&children, &teachers, &parents, a);
+		}
+		else {
+			cout << "\n>>Error. Enter only the number<<\n";
+		}
+	}
+}
 
-//Design menus nicely - headings, colours, dividing lines
-	//Include cancel options to avoid trapping users
-	//Include a "register/update another? prompt where approriate"
+bool askUpdateParent(string field) {
+	cout << "\nWould you like to update your " << field << "?";
+	string answer;
+	while (answer != "1" && answer != "2") {
+		cout << "\nEnter 1 to update or 2 to leave this data as is.";
+		cin >> answer;
+		if (answer == "1") {
+			return true;
+		}
+		else if (answer == "2") {
+			return false;
+		}
+		else {
+			cout << ">>Error. Please only type the number, then press enter<<";
+		}
+	}
+}
+
+//Still Needed
+	//update teacher records as admin or teahcer
 	//Include better explanations of input formats (eg classroom numbers) and conditions(eg no two students in the same class with the same name)
-	//Maybe output all extant classrooms for classroom questions to help epople select the one? Or make a selection menu with an add a class option? Worth noting Beula says we only need one classroom as a proof of concept
-	//Add support for siblings and multiple parents
-
-//Other potential improvements
-	//Pass only necessary vectors
-	//Login as function? save some lines of code
 	//give more options for admin to delete/edit files for parents/teachers
+	//refactoring
