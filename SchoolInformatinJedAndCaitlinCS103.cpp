@@ -654,9 +654,9 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	}
 	cout << "\nPlease enter your contact number: ";
 	getline(cin, registrant.Ph);
-	cout << "\nPlease enter the classroom you'll be working in (e.g. 201, 105): ";
+	cout << "\nPlease enter the classroom you'll be working in (e.g. 201): ";
 	getline(cin, registrant.classroom);
-	cout << "\nPlease enter the year you'll be teaching: ";
+	cout << "\nPlease enter the year you'll be teaching (eg year 9): ";
 	getline(cin, registrant.year);
 	cout << "\nPlease enter choose a username: ";
 	getline(cin, registrant.username);
@@ -684,12 +684,12 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 	getline(cin, registrant.password);
 	//Password Validation
 	int passwordFlag = 0;
+	while (passwordFlag == 0) {
 	int upperFlag = 0;
 	int lowerFlag = 0;
 	int digitFlag = 0;
 	int symbolFlag = 0;
 	int symbolSubFlag = 0;
-	while (passwordFlag == 0) {
 		for (int i = 0; i < registrant.password.length(); i++) {
 			symbolSubFlag = 0;
 			if (islower(registrant.password[i])) {
@@ -755,18 +755,18 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 	//Register Parent Record 
 	Parent registrant;
 	cout << "\n****************************************************************************************\n";
-	cout << "\nWelcome to the parent registration form. Please note each child can only have one account, and each account can only have one child - if you have multiple children at the school you will have to register a parent's account for each one.";
-	cin.ignore();
+	cout << "\nWelcome to the parent registration form.\nPlease note each child can only have one account, and each account can only have one child.\nIf you have multiple children at the school you will have to register a parent's account for each one.\nIf you have co-carers who need access you will need to share the account with them.\n";
 	//Confirm child identity
 	int childFoundFlag = 0;
 	int match = 0;
 	string menu = "0";
 	while (childFoundFlag != 1) {
+	cin.ignore();
 		cout << "\nPlease enter the first name(s) of your child: ";
 		getline(cin, registrant.childFirstName);
 		cout << "\nPlease enter the last name(s) of your child: ";
 		getline(cin, registrant.childLastName);
-		cout << "\nPlease enter your child's classroom (eg 201, 105): ";
+		cout << "\nPlease enter your child's classroom (eg 201): ";
 		getline(cin, registrant.classroom);
 		for (int i = 0; i < children.size(); i++) {
 			if (children[i].firstName == registrant.childFirstName && children[i].lastName == registrant.childLastName && children[i].classroom == registrant.classroom) {
@@ -868,12 +868,12 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			getline(cin, registrant.password);
 			//Password Validation
 			int passwordFlag = 0;
+			while (passwordFlag == 0) {
 			int upperFlag = 0;
 			int lowerFlag = 0;
 			int digitFlag = 0;
 			int symbolFlag = 0;
 			int symbolSubFlag = 0;
-			while (passwordFlag == 0) {
 				for (int i = 0; i < registrant.password.length(); i++) {
 					symbolSubFlag = 0;
 					if (islower(registrant.password[i])) {
@@ -2050,12 +2050,12 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 				cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 				//Password Validation
 				int passwordFlag = 0;
+				while (passwordFlag == 0) {
 				int upperFlag = 0;
 				int lowerFlag = 0;
 				int digitFlag = 0;
 				int symbolFlag = 0;
 				int symbolSubFlag = 0;
-				while (passwordFlag == 0) {
 					getline(cin, parents[match].password);
 					for (int i = 0; i < parents[match].password.length(); i++) {
 						symbolSubFlag = 0;
