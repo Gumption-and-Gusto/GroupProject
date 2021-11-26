@@ -1,0 +1,38 @@
+﻿  SchoolInformatinJedAndCaitlinCS103.cpp
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(382,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(528,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(645,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(668,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(693,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(771,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(831,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(852,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(877,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(913,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(918,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(938,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1078,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1152,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1193,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1258,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1302,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1405,25): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1447,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1584,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1627,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1677,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1712,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1777,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1821,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1918,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1921,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1926,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1943,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1950,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1998,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(2054,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(2089,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(2125,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(1900): warning C4715: 'askUpdate': not all control paths return a value
+C:\Users\jedda\Documents\CS103GroupProject\GroupProject\SchoolInformatinJedAndCaitlinCS103.cpp(2164): warning C4715: 'askUpdateParent': not all control paths return a value
+  SchoolInformatinJedAndCaitlinCS103.vcxproj -> C:\Users\jedda\Documents\CS103GroupProject\GroupProject\Debug\SchoolInformatinJedAndCaitlinCS103.exe
