@@ -1,4 +1,4 @@
-//School Information System
+//School Information System - Jed and Caitlin CS103 Group Project
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -158,11 +158,13 @@ bool askUpdateParent(string field);
 
 int main()
 {	
+	//Read files into vectors
 	vector <Child> children = readChildren201();
 	vector <Teacher> teachers = readTeachers();
 	vector <Parent> parents = readParents();
+	
 	Admin admin;
-	mainMenu(&children, &teachers, &parents, &admin);//I'm not sure that we'll actually need to pass these around all the time. I built it with these vectors in case but we may end up passing them a lot less
+	mainMenu(&children, &teachers, &parents, &admin);
 }
 
 //Function Definitions
@@ -316,7 +318,7 @@ void mainMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a)
 	cout << "\n\x1B[31m****************************************************************************************\n";
 	cout << "\n\t\t\t\tWelcome to Artificer Academy";
 	cout << "\n\t\t\t\t\t---Home Page---";
-	cout << "\n\n****************************************************************************************\n";
+	cout << "\n\n****************************************************************************************\n\t\t\t    Term dates 13-01-2022 til 24-04-2022\n\t\t\t\t  Athletics day 28-01-2022\n****************************************************************************************\n";
 	cout << "\nPlease select one of the following options by typing its number and pressing enter.\n\n\n\t1. Login\n\n\t2. Register\n\n\t3. Exit\n\n\nPlease enter your chosen option: ";
 	while (menu != "1" && menu != "2" && menu != "3") {
 		cin >> menu;//Menus using string inputs and digit answers through if statements are more robust than other variables or switches. We don't use getline because we don't want values with spaces to be handled fully - if some enters "1 " or "1 Login" this code will read it as "1", which is desirable.
@@ -393,7 +395,9 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 		getline(cin, password);
 	}
 	else {
-		cout << "\n>>No user found with that name<<\n Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Register an account\n\n\t3. Return to Main Menu\n\n";
+		cout << "\n>>No user found with that name<<\n";
+		system("pause");
+		cout << "\n Enter a selection : \n\n\t1.Attempt to log in again\n\n\t2.Register an account\n\n\t3.Return to Main Menu\n\n";
 		string menu = "0";
 		while (menu != "1" && menu != "2" && menu != "3") {
 			cin >> menu;
@@ -420,7 +424,6 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
-		cin.ignore();
 		getline(cin, password);
 		if (password == teachers[match].password) {
 			cout << "\nWelcome " << teachers[match].title << " " << teachers[match].lastName << ", you are now logged in.";
@@ -428,15 +431,14 @@ void teacherLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 		}
 		else {
 			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
-			cin.ignore();
 			getline(cin, password);
 			if (password == teachers[match].password) {
 				cout << "\nWelcome " << teachers[match].title << " " << teachers[match].lastName << ", you are now logged in.";
 				teacherMenu(&children, &teachers, &parents, &admin, teachers[match]);
 			}
 			else {
-				cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator.\nEnter 1 to return to Main Menu ";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
-				cin >> password;//"Enter 1" is an instruction that works, but entering anything and pressing enter will work. This input exists to hold the program here while they read the alert above before outputting the main menu again.
+				cout << "\nThat password doesn't match our files.\nThis account has now been locked for one hour.\nPlease contact the administrator.\n";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
+				system("pause");
 				mainMenu(&children, &teachers, &parents, &admin);
 			}
 		}
@@ -461,10 +463,12 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 		getline(cin, password);
 	}
 	else {
-		cout << "\nNo user found with that name. Enter a selection:\n\n\t1. Attempt to log in again\n\n\t2. Return to Main Menu\n\n";
+		cout << "\nNo user found with that name.";
+		system("pause");
+		cout << "Enter a selection : \n\n\t1.Attempt to log in again\n\n\t2.Return to Main Menu\n\n";
 		string menu;
 		while (menu != "1" && menu != "2") {
-		cin >> menu;
+			cin >> menu;
 			if (menu == "1") {
 				adminLogin(&children, &teachers, &parents, &admin);
 			}
@@ -484,26 +488,24 @@ void adminLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
-		cin.ignore();
 		getline(cin, password);
+		cout << endl << password << endl;
 		if (password == admin.password) {
 			cout << "\nWelcome " << admin.username << ", you are now logged in.";
 			adminMenu(c, t, p, &admin);
 		}
 		else {
 			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
-			cin.ignore();
 			getline(cin, password);
-
-		}
-		if (password == admin.password) {
-			cout << "\nWelcome " << admin.username << ", you are now logged in.";
-			adminMenu(c, t, p, &admin);
-		}
-		else {
-			cout << "\nThat password doesn't match our files. This account has now been locked for one hour.\nEnter 1 to return to Main Menu ";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
-				cin >> password;//"Enter 1" is an instruction that works, but entering anything and pressing enter will work. This input exists to hold the program here while they read the alert above before outputting the main menu again.
-			mainMenu(&children, &teachers, &parents, &admin);
+			if (password == admin.password) {
+				cout << "\nWelcome " << admin.username << ", you are now logged in.";
+				adminMenu(c, t, p, &admin);
+			}
+			else {
+				cout << "\nThat password doesn't match our files. This account has now been locked for one hour.\n";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
+				system("pause");
+				mainMenu(&children, &teachers, &parents, &admin);
+			}
 		}
 	}
 }
@@ -534,7 +536,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		getline(cin, password);
 	}
 	else if (matchFlag > 1) {
-		cout << "\n>>Error. Multiple accounts detected. Please contact the administrator to resolve this issue<<\nYou may attempt to log in regardless. Please enter your password: ";
+		cout << "\n>>Error. Multiple accounts detected. Please contact the administrator to resolve this issue<<\nYou may attempt to log in regardless. Please enter your password: ";//If there are multple accounts of the same type with the same username (which should be impossible without directly editing the .csv file) the system will use whichever one was found last. If the password the enter matches then it is presumably their account. Administration should still be notified to fix the duplication.
 		cout << "\nPlease enter your password: ";
 		getline(cin, password);
 	}
@@ -565,7 +567,6 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	}
 	else {
 		cout << "\nThat password doesn't match our files. Two attempts remain.\nPlease enter your password.";
-		cin.ignore();
 		getline(cin, password);
 		if (password == parents[match].password) {
 			cout << "\nWelcome " << parents[match].title << " " << parents[match].lastName << ", you are now logged in.";
@@ -573,7 +574,6 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		}
 		else {
 			cout << "\nThat password doesn't match our files. One attempt remains.\nPlease enter your password.";
-			cin.ignore();
 			getline(cin, password);
 			if (password == parents[match].password) {
 				cout << "\nWelcome " << parents[match].title << " " << parents[match].lastName << ", you are now logged in.";
@@ -581,7 +581,7 @@ void parentLogin(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 			}
 			else {
 				cout << "\nThat password doesn't match our files. This account has now been locked for one hour. Please contact the administrator";//Per the assessment brief, we have included this notification, but the 1 hr lockout is not implemented
-				cin >> password;//"Enter 1" is an instruction that works, but entering anything and pressing enter will work. This input exists to hold the program here while they read the alert above before outputting the main menu again.
+				system("pasue");
 				mainMenu(c, t, &parents, a);
 			}
 		}
@@ -648,7 +648,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			}
 		}
 		if (emailFlag == 0) {
-			cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<< ";
+			cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<<\n";
 			getline(cin, registrant.email);
 		}
 	}
@@ -680,7 +680,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			}
 		}
 	}
-	cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
+	cout << "\nPlease enter choose a password.\nInclude a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 	getline(cin, registrant.password);
 	//Password Validation
 	int passwordFlag = 0;
@@ -712,7 +712,7 @@ void teacherRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Ad
 			passwordFlag++;
 		}
 		if (passwordFlag == 0) {
-			cout << ">>Error. Passwords must be 8 or more characters, including upper and lower case letters, numbers, and non-alphanumeric symbols. Please enter a valid password<< ";
+			cout << ">>Error. Invalid password<<\nPasswords must be 8 or more characters, including:\n\t- upper and lower case letters\n\t- numbers\n\t- non-alphanumeric symbols.\nPlease enter a valid password: ";
 			getline(cin, registrant.password);
 		}
 	}
@@ -775,8 +775,8 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 					match = i;
 				}
 				else {
-					cout << ">>Error. There is already a parent account associated with that child. Please confirm account details with any co-carers who may have already registered an account or contact the administrator to resolve this issue<<\nEnter 1 to return to the main menu";
-					cin >> menu;
+					cout << ">>Error. There is already a parent account associated with that child. Please confirm account details with any co-carers who may have already registered an account or contact the administrator to resolve this issue<<\n";
+					system("pause");
 					mainMenu(&children, &teachers, &parents, &admin);
 				}
 			}
@@ -834,7 +834,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 					}
 				}
 				if (emailFlag == 0) {
-					cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<< ";
+					cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<<\n";
 					getline(cin, registrant.email);
 				}
 			}
@@ -864,7 +864,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 					}
 				}
 			}
-			cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
+			cout << "\nPlease enter choose a password.\n Include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 			getline(cin, registrant.password);
 			//Password Validation
 			int passwordFlag = 0;
@@ -896,7 +896,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 					passwordFlag++;
 				}
 				if (passwordFlag == 0) {
-					cout << ">>Error. Passwords must be 8 or more characters, including upper and lower case letters, numbers, and non-alphanumeric symbols. Please enter a valid password<< ";
+					cout << ">>Error. Invalid password<<\nPasswords must be 8 or more characters, including:\n\t- upper and lower case letters\n\t- numbers\n\t- non-alphanumeric symbols.\nPlease enter a valid password: ";
 					getline(cin, registrant.password);
 				}
 			}
@@ -922,7 +922,6 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 				}
 				if (IDFlag == 0) {
 					children[match].parent = id;
-					cout << "assigned ID to children[i].parent: " << id;
 					registrant.ID = id;
 				}
 			}
@@ -945,7 +944,7 @@ void parentRegister(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Adm
 			//Register another?
 			string another = "0";
 			while (another != "1" && another != "2") {
-				cout << "\nRegister another parent's account? Enter 1 to do so or 2 to return to the main menu.";
+				cout << "\nRegister another parent's account? Enter 1 to do so or 2 to return to the main menu.\n";
 				cin >> another;
 				if (another == "1") {
 					parentRegister(&children, &teachers, &parents, &admin);
@@ -1017,12 +1016,11 @@ void childRegister(vector<Child>* c, vector<Teacher>*t, vector<Parent>* p, Admin
 	Classroom << registrant.firstName << "," << registrant.lastName << ","  << registrant.preferredName << "," << registrant.gender << "," << registrant.pronouns << "," << registrant.DOB << "," << registrant.classroom << "," << registrant.maths << "," << registrant.science << "," << registrant.reading << "," << registrant.writing << "," << registrant.others << "," << registrant.progress << "," << registrant.parent << endl;
 	Classroom.close();//Close file
 	children = readChildren201();
-	cout << children[1].firstName;
 
 	//Register another?
 	string another = "0";
 	while (another != "1" && another != "2") {
-		cout << "\nRegister another student? Enter 1 to do so or 2 to return to your menu. ";
+		cout << "\nRegister another student? Enter 1 to do so or 2 to return to your menu.\n";
 		cin >> another;
 		if (another == "1") {
 			childRegister(&children, &teachers, &parents, &admin);
@@ -1056,6 +1054,7 @@ void teacherMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		}
 		else {
 			cout << ">>Error. That wasn't one of the options. Please enter only the number<<\n";
+			system("pause");
 		}
 	}
 }
@@ -1068,6 +1067,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 	string firstName;
 	string lastName;
 
+	//Finding Student Record
 	cout << "\nPlease enter the student's first name(s): ";
 	cin.ignore();
 	getline(cin, firstName);
@@ -1115,6 +1115,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 			}
 		}
 	}
+	//Enter Results
 	else {
 		cout << "\nPlease enter the maths results: ";
 		getline(cin, children[match].maths);
@@ -1154,6 +1155,7 @@ void updateGrades(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin
 		Classroom.close();//Close file
 		children = readChildren201();
 
+		//Udate another?
 		menu = "0";
 		while (menu != "1" && menu != "2") {
 			cout << "Please enter 1 to update another student's grades or 2 to return to your menu.";
@@ -1176,6 +1178,8 @@ void displayStudentRecordTeacher(vector<Child>* c, vector<Teacher>* t, vector<Pa
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Find Student
 	string firstName;
 	string lastName;
 	Child display;
@@ -1226,8 +1230,10 @@ void displayStudentRecordTeacher(vector<Child>* c, vector<Teacher>* t, vector<Pa
 			}
 		}
 	}
+	//Output
 	else {
 		cout << "\nRecord found\n\n" <<children[match].firstName << " " << children[match].lastName << "\nPrefers to be called " << children[match].preferredName << "\nGender: " << children[match].gender << " (uses " << children[match].pronouns << " pronouns)\nBorn " << children[match].DOB << "\nCurrent grades:\nMaths: " << children[match].maths << "\nScience: " << children[match].science << "\nWriting: " << children[match].writing << "\nReading: " << children[match].reading << "\nOthers: " << children[match].others << "\nOverall assessment of learning progress: " << children[match].progress;
+		system("pause");
 		teacherMenu(&children, &teachers, &parents, &admin, currentAccount);
 	}
 }
@@ -1237,6 +1243,8 @@ void displayParentsRecordTeacher(vector<Child>* c, vector<Teacher>* t, vector<Pa
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+	
+	//Find Student
 	string firstName;
 	string lastName;
 	Child display;
@@ -1287,6 +1295,7 @@ void displayParentsRecordTeacher(vector<Child>* c, vector<Teacher>* t, vector<Pa
 			}
 		}
 	}
+	//Find matching parent by ID
 	else {
 		int parentFoundFlag = 0;
 		int parentMatch = 0;
@@ -1330,8 +1339,10 @@ void displayParentsRecordTeacher(vector<Child>* c, vector<Teacher>* t, vector<Pa
 				}
 			}
 		}
+		//Output parent details
 		else {
 			cout << "\nRecord found\n\n" << parents[parentMatch].title << " " << parents[parentMatch].firstName << " " << parents[parentMatch].lastName << "\nPrefers to be called " << parents[parentMatch].preferredName << "\nGender: " << parents[parentMatch].gender << " (uses " << parents[parentMatch].pronouns << " pronouns)\nBorn " << parents[parentMatch].DOB << "\nContact details:\nemail: " << parents[parentMatch].email << "\nPhone: " << parents[parentMatch].Ph << "\nDaytime emergency phone: " << parents[parentMatch].emergencyPh;
+			//Another?
 			menu = "0";
 			while (menu != "1" && menu != "2") {
 				cout << "\nEnter 1 to check another parent's record or 2 to return to your menu.";
@@ -1409,6 +1420,7 @@ void adminMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a
 		}
 		else {
 			cout << ">>Error. That wasn't one of the options<<\n";
+			system("pause");
 		}
 	}
 }
@@ -1418,11 +1430,11 @@ void updateChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 	vector<Teacher> teachers = *t;
 	vector<Parent> parents = *p;
 	Admin admin = *a;
+
+	//Select a student's record
 	string firstName;
 	string lastName;
 	string classroom;
-
-	//Select a student's record
 	cin.ignore();
 	cout << "\nPlease enter the student's current first name(s): ";
 	getline(cin, firstName);
@@ -1575,6 +1587,8 @@ void updateChild(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin*
 		Classroom.close();//Close file
 		children = readChildren201();
 	}
+	cout << "\nRecord updated.\n";
+	//Update another?
 	menu = "0";
 	while (menu != "1" && menu != "2") {
 		cout << "Enter 1 to update another child's records or 2 to return to your menu.";
@@ -1683,6 +1697,8 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 		vector<Teacher> teachers = *t;
 		vector<Parent> parents = *p;
 		Admin admin = *a;
+
+		//Select Student
 		string firstName;
 		string lastName;
 		Child display;
@@ -1733,8 +1749,10 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 				}
 			}
 		}
+		//Output Record
 		else {
 			cout << "\nRecord found\n\n" <<children[match].firstName << " " << children[match].lastName << "\nPrefers to be called " << children[match].preferredName << "\nGender: " << children[match].gender << " (uses " << children[match].pronouns << " pronouns)\nBorn " << children[match].DOB << "\nCurrent grades:\nMaths: " << children[match].maths << "\nScience: " << children[match].science << "\nWriting: " << children[match].writing << "\nReading: " << children[match].reading << "\nOthers: " << children[match].others << "\nOverall assessment of learning progress: " << children[match].progress;
+			system("pause");
 			adminMenu(&children, &teachers, &parents, &admin);
 		}
 	}
@@ -1744,6 +1762,8 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 		vector<Teacher> teachers = *t;
 		vector<Parent> parents = *p;
 		Admin admin = *a;
+
+		//Find Student
 		string firstName;
 		string lastName;
 		Child display;
@@ -1794,6 +1814,7 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 				}
 			}
 		}
+		//Find matching parent by ID
 		else {
 			int parentFoundFlag = 0;
 			int parentMatch = 0;
@@ -1837,8 +1858,10 @@ void displayStudentRecordAdmin(vector<Child>* c, vector<Teacher>* t, vector<Pare
 					}
 				}
 			}
+			//Output record
 			else {
 				cout << "\nRecord found\n\n" << parents[parentMatch].title << " " << parents[parentMatch].firstName << " " << parents[parentMatch].lastName << "\nPrefers to be called " << parents[parentMatch].preferredName << "\nGender: " << parents[parentMatch].gender << " (uses " << parents[parentMatch].pronouns << " pronouns)\nBorn " << parents[parentMatch].DOB << "\nContact details:\nemail: " << parents[parentMatch].email << "\nPhone: " << parents[parentMatch].Ph << "\nDaytime emergency phone: " << parents[parentMatch].emergencyPh;
+				//Output another?
 				menu = "0";
 				while (menu != "1" && menu != "2") {
 					cout << "\nEnter 1 to check another parent's record or 2 to return to your menu.";
@@ -1862,7 +1885,7 @@ bool askUpdate(string field) {
 	cout << "\nWould you like to update the student's " << field << "?";
 	string answer;
 	while (answer != "1" && answer != "2") {
-		cout << "\nEnter 1 to update or 2 to leave this data as is.";
+		cout << "\nEnter 1 to update or 2 to leave this data as is. ";
 		cin >> answer;
 		if (answer == "1") {
 			return true;
@@ -1880,6 +1903,7 @@ void displayProgressLevel(vector<Child>* c, vector<Teacher>* t, vector<Parent>* 
 	vector<Child> children = *c;
 	vector<Teacher> teachers = *t;
 	vector <Parent> parents = *p;
+	//Using ints to access these values rather than making the user type in full strings reduces the chances of typos affecting their results
 	string target;
 	if (pl == "1") {
 		target = "Achieved";
@@ -1905,32 +1929,37 @@ void displayProgressLevel(vector<Child>* c, vector<Teacher>* t, vector<Parent>* 
 				}
 			}
 		}
+		system("pause");
 	}
+	
 }
 
 void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* a, int currentID) {
 	vector<Child> children = *c;
 	vector<Teacher> teachers = *t;
 	vector <Parent> parents = *p;
+	//Account finding
 	int match = -1;
 	for (int i = 0; i < parents.size(); i++) {
 		if (currentID == parents[i].ID) {
 			match = i;
 		}
 	}
+	//Find matching child
 	int childMatch = -1;
 	for (int i = 0; i < children.size(); i++) {
 		if (currentID == children[i].parent) {
 			childMatch = i;
 		}
 	}
+	//Menu
 	string menu = "0";
 	while (menu != "1" && menu != "2" && menu != "3" && menu != "4" && menu != "5") {
 		cout << "\nWhat would you like to do?\n\n\n\t1. View " << children[childMatch].firstName << "'s report\n\n\t2. Update " << children[childMatch].firstName << "'s details\n\n\t3. Update your details\n\n\t4. View school notices\n\n\t5. Log out and return to the main menu\n\n\n";
 		cin >> menu;
 		if (menu == "1") {
-			cout << children[childMatch].firstName << " " << children[childMatch].lastName << "'s Report:\nOverall progress: " << children[childMatch].progress << "\nMaths: " << children[childMatch].maths << "\nScience: " << children[childMatch].science << "\nReading: " << children[childMatch].reading << "\nWriting" << children[childMatch].writing << "\nOther Subjects: " << children[childMatch].others << "\n\nEnter 1 to return to your menu\n";
-			cin >> menu;
+			cout << children[childMatch].firstName << " " << children[childMatch].lastName << "'s Report:\nOverall progress: " << children[childMatch].progress << "\nMaths: " << children[childMatch].maths << "\nScience: " << children[childMatch].science << "\nReading: " << children[childMatch].reading << "\nWriting: " << children[childMatch].writing << "\nOther Subjects: " << children[childMatch].others << "\n\n";
+			system("pause");
 			parentMenu(&children, &teachers, &parents, a, currentID);
 		}
 		else if (menu == "2") {
@@ -1971,8 +2000,8 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 			}
 			Classroom.close();//Close file
 			children = readChildren201();
-			cout << "Records updated. Enter 1 to return to your menu\n";
-			cin >> menu;
+			cout << "Records updated.\n";
+			system("pause");
 			parentMenu(&children, &teachers, &parents, a, currentID);
 		}
 		else if (menu == "3") {	
@@ -2028,7 +2057,7 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 					}
 				}
 				if (emailFlag == 0) {
-					cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<< ";
+					cout << ">>Error. Emails must include '@' symbol. Please re-enter your email<<\n";
 					getline(cin, parents[match].email);
 				}
 			}
@@ -2047,7 +2076,7 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 			update = askUpdateParent("password");
 			if (update == true) {
 				cin.ignore();
-				cout << "\nPlease enter choose a password - include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
+				cout << "\nPlease enter choose a password.\n Include a number, uppercase letter, lowercase letter and a special symbol (neither a letter nor a number): ";
 				//Password Validation
 				int passwordFlag = 0;
 				while (passwordFlag == 0) {
@@ -2079,7 +2108,7 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 						passwordFlag++;
 					}
 					if (passwordFlag == 0) {
-						cout << ">>Error. Passwords must be 8 or more characters, including upper and lower case letters, numbers, and non-alphanumeric symbols. Please enter a valid password<< ";
+						cout << ">>Error. Invalid password<<\nPasswords must be 8 or more characters, including:\n\t- upper and lower case letters\n\t- numbers\n\t- non-alphanumeric symbols.\nPlease enter a valid password: ";
 					}
 				}
 				//Password Confirmation
@@ -2099,10 +2128,11 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 			ParentList.close();//Close file
 			parents = readParents();
 			parentMenu(&children, &teachers, &parents, a, currentID);
+			cout << "Record updated.";
 		}
 		else if (menu == "4") {
-			cout << "Athletics day 28th January - wear your house colours and comfortable running shoes!\n\nAuditions for the school production of CHESS! The Musical - 3:30pm in room 201 Tuesday afternoon\n\nYu-Gi-Oh trading card ban is tentatively lifted, but we will not hesitate to reinstate it if there is another incident\n\n\nEnter 1 to return to your menu\n";
-			cin >> menu;
+			cout << "Athletics day 28th January - wear your house colours and comfortable running shoes!\n\nAuditions for the school production of CHESS! The Musical - 3:30pm in room 201 Tuesday afternoon\n\nYu-Gi-Oh trading card ban is tentatively lifted, but we will not hesitate to reinstate it if there is another incident\n\n\n";
+			system("pause");
 			parentMenu(&children, &teachers, &parents, a, currentID);
 		}
 		else if (menu == "5") {
@@ -2110,6 +2140,7 @@ void parentMenu(vector<Child>* c, vector<Teacher>* t, vector<Parent>* p, Admin* 
 		}
 		else {
 			cout << "\n>>Error. Enter only the number<<\n";
+			system("pause");
 		}
 	}
 }
@@ -2118,7 +2149,7 @@ bool askUpdateParent(string field) {
 	cout << "\nWould you like to update your " << field << "?";
 	string answer;
 	while (answer != "1" && answer != "2") {
-		cout << "\nEnter 1 to update or 2 to leave this data as is.";
+		cout << "\nEnter 1 to update or 2 to leave this data as is. ";
 		cin >> answer;
 		if (answer == "1") {
 			return true;
@@ -2131,9 +2162,3 @@ bool askUpdateParent(string field) {
 		}
 	}
 }
-
-//Still Needed
-	//update teacher records as admin or teahcer
-	//Include better explanations of input formats (eg classroom numbers) and conditions(eg no two students in the same class with the same name)
-	//give more options for admin to delete/edit files for parents/teachers
-	//refactoring
